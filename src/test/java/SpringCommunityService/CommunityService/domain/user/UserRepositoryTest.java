@@ -1,10 +1,11 @@
 package SpringCommunityService.CommunityService.domain.user;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class UserRepositoryTest {
 
@@ -21,9 +22,9 @@ public class UserRepositoryTest {
         User saveUser = userRepository.save(user);
         User findUser = userRepository.findById(1L);
 
-        Assertions.assertThat(user).isEqualTo(saveUser);
-        Assertions.assertThat(saveUser).isEqualTo(findUser);
-        Assertions.assertThat(findUser.getId()).isEqualTo(1L);
+        assertThat(user).isEqualTo(saveUser);
+        assertThat(saveUser).isEqualTo(findUser);
+        assertThat(findUser.getId()).isEqualTo(1L);
     }
 
     @Test
@@ -36,7 +37,7 @@ public class UserRepositoryTest {
         userRepository.save(userB);
 
         List<User> findUserList = userRepository.findAll();
-        Assertions.assertThat(findUserList.size()).isEqualTo(2);
-        Assertions.assertThat(findUserList).contains(userA,userB);
+        assertThat(findUserList.size()).isEqualTo(2);
+        assertThat(findUserList).contains(userA,userB);
     }
 }

@@ -1,4 +1,4 @@
-package SpringCommunityService.CommunityService.login;
+package SpringCommunityService.CommunityService.web.login;
 
 import lombok.Data;
 

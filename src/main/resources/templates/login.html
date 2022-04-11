@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <style>
     *{
-      text-align: center;
+      text-align: center;ㅁㅇ
     }
   </style>
   <script>
@@ -14,13 +14,14 @@
 <h1>
   홈 화면
 </h1>
+<h4 class="mb-3" th:text="|${user.userId}님 반갑습니다.|">로그인 사용자 이름</h4>
 <p>
   <a href = "home">홈</a>
   <a href = "new">게시물 작성/편집</a>
   <a href = "profile">유저 프로필</a>
   <a href = "follow">팔로우 확인</a>
   <a href = "msg">Direct Message</a>
-  <a href = "/">로그아웃</a>
+  <a href = "/logout">로그아웃</a>
 </p>
 <P>
 <form action="/home" method="post">
