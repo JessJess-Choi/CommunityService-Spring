@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -23,33 +24,36 @@ import javax.validation.Valid;
 public class LoginController {
 
     private final LoginService loginService;
-    private final Session session;
+
+    @GetMapping("/login")
+    public String loginForm(@ModelAttribute("loginForm") LoginForm loginForm){
+        return "login/loginForm";
+    }
 
     @PostMapping("/login")
     public String loginCheck(@Valid @ModelAttribute LoginForm loginForm,
                              BindingResult bindingResult, HttpServletRequest req,
-                             Model model){
+                             @RequestParam(defaultValue = "/") String redirectURL){
         log.info("로그인 요청 id : {} password : {}",loginForm.getUserId(),loginForm.getPassword());
         if(bindingResult.hasErrors()){
             log.info("error input");
-            return "redirect:/";
+            return "login/loginForm";
         }
 
         User loginUser = loginService.login(loginForm.getUserId(),loginForm.getPassword());
         if(loginUser == null){
             log.info("잘못된 로그인 id : {}, pw : {}",loginForm.getUserId(),loginForm.getPassword());
             bindingResult.reject("loginFail","잘못된 id or pw");
-            return "redirect:/";
+            return "login/loginForm";
         }
 
         HttpSession session = req.getSession();
         session.setAttribute(SessionConst.LOGIN_USER,loginUser);
-        model.addAttribute("user",loginUser);
 
-        return "login";
+        return "redirect:" + redirectURL;
     }
 
-    @GetMapping("/logout")
+    @PostMapping("/logout")
     public String logout(HttpServletRequest req){
         HttpSession session = req.getSession(false);
         if(session != null){
