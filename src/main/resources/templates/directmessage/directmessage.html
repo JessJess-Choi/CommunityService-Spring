@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    *{
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<h1>게시글</h1>
+<br>
+<div class="col">
+  <form th:action="@{/directmessage}" method="post">
+    <button class="w-100 btn btn-dark btn-lg" type="submit">
+      홈
+    </button>
+  </form>
+</div>
+<br>
+<h4 class="mb-3" th:text="|${user.name} 님 프로필|">로그인 사용자 이름</h4>
+<br>
+<h4 class="mb-3" th:text="|ID : ${user.userId}|">로그인 사용자 이름</h4>
+<br>
+<h4 class="mb-3" th:text="|email : ${user.email}|">로그인 사용자 이름</h4>
+</body>
+</html>

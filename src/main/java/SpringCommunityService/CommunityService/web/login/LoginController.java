@@ -3,11 +3,10 @@ package SpringCommunityService.CommunityService.web.login;
 import SpringCommunityService.CommunityService.domain.login.LoginService;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.web.SessionConst;
-import SpringCommunityService.CommunityService.web.session.Session;
+import SpringCommunityService.CommunityService.web.argumentresolver.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -54,7 +53,8 @@ public class LoginController {
     }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest req){
+    public String logout(HttpServletRequest req, @Login User loginUser){
+        log.info("{}, {} 로그아웃",loginUser.getId(),loginUser.getUserId());
         HttpSession session = req.getSession(false);
         if(session != null){
             session.invalidate();

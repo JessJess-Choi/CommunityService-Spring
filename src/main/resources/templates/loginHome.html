@@ -12,39 +12,39 @@
         <h2>홈 화면</h2>
     </div>
 
-    <h4 class="mb-3" th:text="|${user.userId} 님 반갑습니다|">로그인 사용자 이름</h4>
+    <h4 class="mb-3" th:text="|${user.name} 님 반갑습니다|">로그인 사용자 이름</h4>
 
     <hr class="my-4">
 
     <div class="row">
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg" type="button"
-                    th:onclick="|location.href='@{/items}'|">
-                상품 관리
+                    th:onclick="|location.href='@{/profile}'|">
+                프로필
             </button>
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg" type="button"
-                    th:onclick="|location.href='@{/items}'|">
-                상품 관리
+                    th:onclick="|location.href='@{/contents}'|">
+                게시글
             </button>
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg" type="button"
-                    th:onclick="|location.href='@{/items}'|">
-                상품 관리
+                    th:onclick="|location.href='@{/follow}'|">
+                팔로우
             </button>
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg" type="button"
-                    th:onclick="|location.href='@{/items}'|">
-                상품 관리
+                    th:onclick="|location.href='@{/directmessage}'|">
+                메시지
             </button>
         </div>
         <div class="col">
             <form th:action="@{/logout}" method="post">
-                <button class="w-100 btn btn-dark btn-lg" onclick="location.href='items.html'" type="submit">
-                    로그아웃
+                <button class="w-100 btn btn-dark btn-lg" type="submit">
+                    logout
                 </button>
             </form>
         </div>
