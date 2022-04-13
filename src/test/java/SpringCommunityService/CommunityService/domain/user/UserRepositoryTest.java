@@ -18,7 +18,7 @@ public class UserRepositoryTest {
 
     @Test
     void saveTest(){
-        User user = new User("userA","password","a@a.com");
+        User user = new User("userA","password","a@a.com","name1");
         User saveUser = userRepository.save(user);
         User findUser = userRepository.findById(1L);
 
@@ -30,8 +30,8 @@ public class UserRepositoryTest {
     @Test
     void findAllTest(){
 
-        User userA = new User("userA","password","a@a.com");
-        User userB = new User("userB","password","a@a.com");
+        User userA = new User("userA","password","a@a.com","name1");
+        User userB = new User("userB","password","a@a.com","name2");
 
         userRepository.save(userA);
         userRepository.save(userB);

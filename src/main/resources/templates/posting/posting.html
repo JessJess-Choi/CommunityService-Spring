@@ -14,17 +14,20 @@
 <h1>게시글</h1>
 <br>
 <div class="col">
-  <form th:action="@{/contents}" method="post">
+  <form th:action="@{/posting}" method="post">
     <button class="w-100 btn btn-dark btn-lg" type="submit">
       홈
     </button>
   </form>
 </div>
 <br>
-<h4 class="mb-3" th:text="|${user.name} 님 프로필|">로그인 사용자 이름</h4>
+<h4 class="mb-3" th:text="|${user.name} 님 안녕하세요|">로그인 사용자 이름</h4>
 <br>
-<h4 class="mb-3" th:text="|ID : ${user.userId}|">로그인 사용자 이름</h4>
-<br>
-<h4 class="mb-3" th:text="|email : ${user.email}|">로그인 사용자 이름</h4>
+<h4 class="mb-3" th:each="post : ${posting}">
+  <span th:text="|작성자 : ${post.userId}|"></span>
+  <span th:text="${post.content}"></span>
+  <span th:text="|${post.time.hour}:${post.time.minute}|"></span>
+  <br>
+</h4>
 </body>
 </html>

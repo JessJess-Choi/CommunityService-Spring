@@ -11,20 +11,20 @@
     </style>
 </head>
 <body>
-    <h1>user profile page</h1>
-    <br>
-    <div class="col">
-        <form th:action="@{/profile}" method="post">
-            <button class="w-100 btn btn-dark btn-lg" type="submit">
-                홈
-            </button>
-        </form>
-    </div>
-    <br>
-    <h4 class="mb-3" th:text="|${user.name} 님 프로필|">로그인 사용자 이름</h4>
-    <br>
-    <h4 class="mb-3" th:text="|ID : ${user.userId}|">로그인 사용자 이름</h4>
-    <br>
-    <h4 class="mb-3" th:text="|email : ${user.email}|">로그인 사용자 이름</h4>
+<h1>유저 프로필</h1>
+<br>
+<div class="col">
+    <form th:action="@{/profile}" method="post">
+        <button class="w-100 btn btn-dark btn-lg" type="submit">
+            홈
+        </button>
+    </form>
+</div>
+<br>
+<h4 class="mb-3" th:text="|${user.name} 님 프로필|"></h4>
+<br>
+<h4 class="mb-3" th:text="|ID : ${user.userId}|"></h4>
+<br>
+<h4 class="mb-3" th:text="|email : ${user.email}|"></h4>
 </body>
 </html>

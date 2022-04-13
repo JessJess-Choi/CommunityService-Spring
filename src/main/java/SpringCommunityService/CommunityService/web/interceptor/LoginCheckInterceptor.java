@@ -1,8 +1,6 @@
 package SpringCommunityService.CommunityService.web.interceptor;
 
-import SpringCommunityService.CommunityService.domain.user.UserRepository;
 import SpringCommunityService.CommunityService.web.SessionConst;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.servlet.HandlerInterceptor;
 

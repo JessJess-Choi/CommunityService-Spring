@@ -11,7 +11,7 @@
   </style>
 </head>
 <body>
-<h1>게시글</h1>
+<h1>팔로우</h1>
 <br>
 <div class="col">
   <form th:action="@{/follow}" method="post">
@@ -21,10 +21,23 @@
   </form>
 </div>
 <br>
-<h4 class="mb-3" th:text="|${user.name} 님 프로필|">로그인 사용자 이름</h4>
+<h4 class="mb-3" th:text="|${user.name} 님 프로필|"></h4>
 <br>
-<h4 class="mb-3" th:text="|ID : ${user.userId}|">로그인 사용자 이름</h4>
+<h4 class="mb-3" th:text="|ID : ${user.userId}|"></h4>
 <br>
-<h4 class="mb-3" th:text="|email : ${user.email}|">로그인 사용자 이름</h4>
+<h4 class="mb-3" th:text="|email : ${user.email}|"></h4>
+<br>
+<h4 class="mb-3" th:text="|팔로우 중인 유저|"></h4>
+<h4 class="mb-3" th:each="f : ${follow}" >
+    <span th:text="${f}"></span>
+    <a th:href="@{/followToUnfollow/{id} (id=${f})}" style="background-color: blue;color: black" role="button">언팔로우</a>
+</h4>
+<br>
+<h4 class="mb-3" th:text="|팔로우 안하는 유저|"></h4>
+<h4 class="mb-3" th:each="f : ${unFollow}">
+  <span th:text="${f}"></span>
+  <a th:href="@{/unfollowToFollow/{id} (id=${f})}" style="background-color: red;color: black" role="button">팔로우</a>
+  </form>
+</h4>
 </body>
 </html>
