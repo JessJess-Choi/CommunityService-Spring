@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <link th:href="@{/css/bootstrap.min.css}"
+        href="../css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    *{
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<h1>게시글 수정</h1>
+<br>
+<h3>원래 내용</h3>
+<span th:text="${posting.getContent()}"></span>
+<br>
+<br>
+<h3>수정 내용</h3>
+<form th:action th:object="${postingForm}" method="post">
+
+  <div th:if="${#fields.hasGlobalErrors()}">
+    <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
+  </div>
+
+  <div>
+    <label for="loginId">포스팅 내용</label>
+    <input type="text" id="loginId" th:field="*{content}" class="form-control"
+           th:errorclass="field-error">
+    <div class="field-error" th:errors="*{content}" />
+  </div>
+
+  <div class="row">
+    <div class="col">
+      <button class="w-100 btn btn-primary btn-lg" type="submit"
+              th:onclick="|location.href='@{/posting/edit/{postingId} (postingId=${posting.getId()}}'|">포스팅 수정 하기</button>
+    </div>
+    <div class="col">
+      <button class="w-100 btn btn-secondary btn-lg"
+              th:onclick="|location.href='@{/posting}'|"
+              type="button">취소</button>
+    </div>
+  </div>
+
+</form>
+</body>
+</html>

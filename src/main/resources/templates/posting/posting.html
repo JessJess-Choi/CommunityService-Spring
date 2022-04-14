@@ -19,6 +19,11 @@
       홈
     </button>
   </form>
+  <form th:action="@{/posting/add}" method="get">
+    <button class="w-100 btn btn-dark btn-lg" style="background-color: blueviolet" type="submit">
+      게시글 쓰기
+    </button>
+  </form>
 </div>
 <br>
 <h4 class="mb-3" th:text="|${user.name} 님 안녕하세요|">로그인 사용자 이름</h4>
@@ -27,6 +32,7 @@
   <span th:text="|작성자 : ${post.userId}|"></span>
   <span th:text="${post.content}"></span>
   <span th:text="|${post.time.hour}:${post.time.minute}|"></span>
+  <a th:href="@{/posting/edit/{postingId} (postingId=${post.id})}" style="background-color: blue;color: black" role="button">편집</a>
   <br>
 </h4>
 </body>

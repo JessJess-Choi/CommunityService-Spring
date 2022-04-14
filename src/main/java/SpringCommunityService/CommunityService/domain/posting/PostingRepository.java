@@ -19,6 +19,12 @@ public class PostingRepository {
         return posting;
     }
 
+    public Posting set(Long id,Posting posting){
+        posting.setId(id);
+        store.put(id,posting);
+        return posting;
+    }
+
     public Posting findById(Long id){
         return store.get(id);
     }
