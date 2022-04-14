@@ -21,10 +21,12 @@
   </form>
 </div>
 <br>
-<h4 class="mb-3" th:text="|${user.name} 님 프로필|">로그인 사용자 이름</h4>
+<h4 class="mb-3" th:text="|${user.name} 님 팔로우 리스트|">로그인 사용자 이름</h4>
 <br>
-<h4 class="mb-3" th:text="|ID : ${user.userId}|">로그인 사용자 이름</h4>
-<br>
-<h4 class="mb-3" th:text="|email : ${user.email}|">로그인 사용자 이름</h4>
+<h4 class="mb-3" th:each="f : ${follow}" >
+  <span>유저 : </span>
+  <span th:text="${f}"></span>
+  <a th:href="@{/directmessage/{id} (id=${f})}" style="background-color: blue;color: black" role="button">DM 보내기</a>
+</h4>
 </body>
 </html>

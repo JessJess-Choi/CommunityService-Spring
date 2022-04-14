@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/css/bootstrap.min.css}"
+          href="../css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        h1,h4,button,label{
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<h1 th:text="|${user.getName()} 님 안녕하세요|"></h1>
+<br>
+<div class="col">
+    <form th:action="@{/directmessage}" method="post">
+        <button class="w-100 btn btn-dark btn-lg" type="submit">
+            홈
+        </button>
+    </form>
+</div>
+<br>
+<h4 th:text="|${receiver} 님과의 메세지|">로그인 사용자 이름</h4>
+<br>
+<h4 th:each="message : ${messageList}">
+    <p th:if="${message.getSenderId().equals(user.getUserId())}" th:text="${message.getMessage()}" style="text-align: right;color:purple">1</p>
+    <p th:if="${message.getSenderId().equals(receiver)}" th:text="${message.getMessage()}" style="text-align: left;color: chocolate">2</p>
+</h4>
+
+
+<form th:action th:object="${messageForm}" method="post">
+
+    <div th:if="${#fields.hasGlobalErrors()}">
+        <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
+    </div>
+
+    <div>
+        <label for="loginId">메시지 내용</label>
+        <input type="text" id="loginId" th:field="*{message}" class="form-control"
+               th:errorclass="field-error">
+        <div class="field-error" th:errors="*{message}" />
+    </div>
+
+    <div class="row">
+        <div class="col">
+            <button class="w-100 btn btn-primary btn-lg" type="submit"
+                    th:onclick="|location.href='@{/directmessage/{receivergId} (receiverId=${receiver}}'|">메시지 보내기</button>
+        </div>
+        <div class="col">
+            <button class="w-100 btn btn-secondary btn-lg"
+                    th:onclick="|location.href='@{/directmessage}'|"
+                    type="button">취소</button>
+        </div>
+    </div>
+
+</form>
+</body>
+</html>

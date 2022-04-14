@@ -2,10 +2,13 @@ package SpringCommunityService.CommunityService;
 
 import SpringCommunityService.CommunityService.domain.follow.Follow;
 import SpringCommunityService.CommunityService.domain.follow.FollowRepository;
+import SpringCommunityService.CommunityService.domain.message.Message;
+import SpringCommunityService.CommunityService.domain.message.MessageRepository;
 import SpringCommunityService.CommunityService.domain.posting.Posting;
 import SpringCommunityService.CommunityService.domain.posting.PostingRepository;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.domain.user.UserRepository;
+import SpringCommunityService.CommunityService.web.directmessage.DirectMessageController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -19,6 +22,7 @@ public class TestData {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
     private final PostingRepository postingRepository;
+    private final MessageRepository messageRepository;
 
     @PostConstruct
     public void init(){
@@ -31,6 +35,10 @@ public class TestData {
         Posting posting1 = new Posting("1","test posting","fileId", LocalTime.now());
         Posting posting2 = new Posting("1","test posting22","fileId", LocalTime.now().minusHours(10));
         Posting posting3 = new Posting("2","test posting33","fileId", LocalTime.now().minusHours(30));
+        Message message1 = new Message("1","2","testMessage",LocalTime.now().minusSeconds(3L));
+        Message message2 = new Message("2","1","testMessage2",LocalTime.now().minusSeconds(20L));
+        Message message3 = new Message("1","2","testMessage3",LocalTime.now().minusSeconds(10L));
+        Message message4 = new Message("3","2","testMessage3",LocalTime.now());
 
         userRepository.save(user1);
         userRepository.save(user2);
@@ -41,5 +49,9 @@ public class TestData {
         postingRepository.save(posting1);
         postingRepository.save(posting2);
         postingRepository.save(posting3);
+        messageRepository.save(message1);
+        messageRepository.save(message2);
+        messageRepository.save(message3);
+        messageRepository.save(message4);
     }
 }
