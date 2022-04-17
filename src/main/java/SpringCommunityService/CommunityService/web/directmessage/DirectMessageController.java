@@ -5,7 +5,6 @@ import SpringCommunityService.CommunityService.domain.message.Message;
 import SpringCommunityService.CommunityService.domain.message.MessageRepository;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.web.argumentresolver.Login;
-import SpringCommunityService.CommunityService.web.posting.PostingForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -70,8 +69,6 @@ public class DirectMessageController {
                               @ModelAttribute("messageForm") MessageForm messageForm){
 
         messageRepository.save(new Message(loginUser.getUserId(),receiverId,messageForm.getMessage(), LocalTime.now()));
-//        model.addAttribute("user",loginUser);
-  //      model.addAttribute("follow",followRepository.findById(loginUser.getUserId()));
         return "redirect:/directmessage/" + receiverId;
     }
 

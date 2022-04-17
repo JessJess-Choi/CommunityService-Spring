@@ -1,7 +1,5 @@
 package SpringCommunityService.CommunityService.domain.follow;
 
-import SpringCommunityService.CommunityService.domain.user.User;
-import SpringCommunityService.CommunityService.domain.user.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 

@@ -4,7 +4,6 @@ import SpringCommunityService.CommunityService.domain.posting.Posting;
 import SpringCommunityService.CommunityService.domain.posting.PostingRepository;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.web.argumentresolver.Login;
-import SpringCommunityService.CommunityService.web.login.LoginForm;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -12,8 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -23,12 +24,16 @@ public class PostingController {
     private final PostingRepository postingRepository;
 
     @GetMapping("/posting")
-    public String userPosting(@Login User loginUser, Model model){
+    public String userPosting(@Login User loginUser, Model model,
+                              @ModelAttribute("postingForm") PostingForm postingForm){
         //db에서 값 읽어와서 모델에 넣고 contents  렌더링 => contents/contents도 수정
         log.info("id : {}, loginId : {} 게시판 접속",loginUser.getId(),loginUser.getUserId());
         log.info("{} posting :  {}",loginUser.getUserId(),postingRepository.findById(1L));
+
+        List<Posting> allPosts = postingRepository.findAll();
+        Collections.sort(allPosts, (o1,o2) -> o1.getTime().compareTo(o2.getTime()));
         model.addAttribute("user",loginUser);
-        model.addAttribute("posting",postingRepository.findAll());
+        model.addAttribute("posting",allPosts);
         return "posting/posting";
     }
 
@@ -70,5 +75,33 @@ public class PostingController {
         Posting posting = new Posting(user.getUserId(),postingForm.getContent(),"fileId",LocalTime.now());
         postingRepository.set(Long.parseLong(postingId),posting);
         return "redirect:/posting";
+    }
+
+    @PostMapping("/posting/search/writer")
+    public String searchWriter(@Login User loginUser, Model model,
+                         @ModelAttribute("postingForm") PostingForm postingForm) {
+        String searchContent = postingForm.getContent();
+        log.info("포스팅 작성자 아이디 검색 : {}",searchContent);
+
+        List<Posting> allSearchPosts = postingRepository.findAll().stream().
+                filter(posting -> posting.getUserId().equals(searchContent)).collect(Collectors.toList());
+        Collections.sort(allSearchPosts, (o1, o2) -> o1.getTime().compareTo(o2.getTime()));
+        model.addAttribute("user",loginUser);
+        model.addAttribute("posting",allSearchPosts);
+        return "posting/posting";
+    }
+
+    @PostMapping("/posting/search/content")
+    public String searchContent(@Login User loginUser, Model model,
+                         @ModelAttribute("postingForm") PostingForm postingForm) {
+        String searchContent = postingForm.getContent();
+        log.info("포스팅 내용 검색 : {}",searchContent);
+
+        List<Posting> allSearchPosts = postingRepository.findAll().stream().
+                filter(posting -> posting.getContent().equals(searchContent)).collect(Collectors.toList());
+        Collections.sort(allSearchPosts, (o1, o2) -> o1.getTime().compareTo(o2.getTime()));
+        model.addAttribute("user",loginUser);
+        model.addAttribute("posting",allSearchPosts);
+        return "posting/posting";
     }
 }

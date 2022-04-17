@@ -19,7 +19,7 @@
 <div class="container">
 
     <div class="py-5 text-center">
-        <h2>포스팅 하기</h2>
+        <h2>포스팅</h2>
     </div>
 
     <form th:action th:object="${postingForm}" method="post">
@@ -38,7 +38,7 @@
         <div class="row">
             <div class="col">
                 <button class="w-100 btn btn-primary btn-lg" type="submit"
-                        th:onclick="|location.href='@{/posting/add}'|">포스팅 하기</button>
+                        th:onclick="|location.href='@{/posting/add}'|">저장</button>
             </div>
             <div class="col">
                 <button class="w-100 btn btn-secondary btn-lg"

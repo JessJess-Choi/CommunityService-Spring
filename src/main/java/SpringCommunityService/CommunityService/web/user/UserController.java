@@ -29,7 +29,9 @@ public class UserController {
         if(bindingResult.hasErrors()){
             return "users/addUserForm";
         }
-
+        if(userRepository.findByLoginId(user.getUserId()).isPresent()){
+            return "users/addUserForm";
+        }
         userRepository.save(user);
         return "redirect:/";
     }

@@ -26,7 +26,32 @@
   </form>
 </div>
 <br>
+<br>
+<form th:action="@{/posting/search/writer}" th:object="${postingForm}" method="post">
+  <form th:action="@{/posting/search/writer}" method="post">
+    <input type="text" th:field="*{content}" class="form-control"
+           th:errorclass="field-error">
+    <button style="background-color: blueviolet" type="submit">
+      작성자 검색
+    </button>
+  </form>
+</form>
+
+
+<form th:action="@{/posting/search/content}" th:object="${postingForm}" method="post">
+  <form th:action="@{/posting/search/content}" method="post">
+    <input type="text" th:field="*{content}" class="form-control"
+           th:errorclass="field-error">
+    <button style="background-color: blueviolet" type="submit">
+      내용 검색
+    </button>
+  </form>
+</form>
+<br>
+
 <h4 class="mb-3" th:text="|${user.name} 님 안녕하세요|">로그인 사용자 이름</h4>
+<br>
+
 <br>
 <h4 class="mb-3" th:each="post : ${posting}">
   <span th:text="|작성자 : ${post.userId}|"></span>

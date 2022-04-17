@@ -8,7 +8,6 @@ import SpringCommunityService.CommunityService.domain.posting.Posting;
 import SpringCommunityService.CommunityService.domain.posting.PostingRepository;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.domain.user.UserRepository;
-import SpringCommunityService.CommunityService.web.directmessage.DirectMessageController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +31,7 @@ public class TestData {
         Follow follow1 = new Follow(user1.getUserId(),user2.getUserId());
         Follow follow2 = new Follow(user1.getUserId(),user3.getUserId());
         Follow follow3 = new Follow(user2.getUserId(),user1.getUserId());
-        Posting posting1 = new Posting("1","test posting","fileId", LocalTime.now());
+        Posting posting1 = new Posting("1","test","fileId", LocalTime.now());
         Posting posting2 = new Posting("1","test posting22","fileId", LocalTime.now().minusHours(10));
         Posting posting3 = new Posting("2","test posting33","fileId", LocalTime.now().minusHours(30));
         Message message1 = new Message("1","2","testMessage",LocalTime.now().minusSeconds(3L));

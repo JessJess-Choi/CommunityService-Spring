@@ -1,6 +1,5 @@
 package SpringCommunityService.CommunityService.web;
 
-import SpringCommunityService.CommunityService.domain.follow.FollowRepository;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.web.argumentresolver.Login;
 import lombok.RequiredArgsConstructor;
