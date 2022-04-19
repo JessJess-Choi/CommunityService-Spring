@@ -48,14 +48,14 @@ public class DirectMessageController {
                               @ModelAttribute("messageForm") MessageForm messageForm){
 
         List<Message> messageList = messageRepository.findByLoginId(receiverId,loginUser.getUserId());
-
-        Collections.sort(messageList, new Comparator<Message>() {
+        Collections.sort(messageList, (o1,o2) -> o1.getLocalTime().compareTo(o2.getLocalTime()));
+  /*      Collections.sort(messageList, new Comparator<Message>() {
             @Override
             public int compare(Message o1, Message o2) {
                 return o1.getLocalTime().compareTo(o2.getLocalTime());
             }
         });
-
+*/
         log.info("{}",messageList);
         model.addAttribute("user",loginUser);
         model.addAttribute("receiver",receiverId);

@@ -27,26 +27,8 @@
 </div>
 <br>
 <br>
-<form th:action="@{/posting/search/writer}" th:object="${postingForm}" method="post">
-  <form th:action="@{/posting/search/writer}" method="post">
-    <input type="text" th:field="*{content}" class="form-control"
-           th:errorclass="field-error">
-    <button style="background-color: blueviolet" type="submit">
-      작성자 검색
-    </button>
-  </form>
-</form>
-
-
-<form th:action="@{/posting/search/content}" th:object="${postingForm}" method="post">
-  <form th:action="@{/posting/search/content}" method="post">
-    <input type="text" th:field="*{content}" class="form-control"
-           th:errorclass="field-error">
-    <button style="background-color: blueviolet" type="submit">
-      내용 검색
-    </button>
-  </form>
-</form>
+<a th:href="@{/posting/search/postingId}" style="background-color: blue;color: black" role="button">작성자 검색</a>
+<a th:href="@{/posting/search/content}" style="background-color: blue;color: black" role="button">게시물 검색</a>
 <br>
 
 <h4 class="mb-3" th:text="|${user.name} 님 안녕하세요|">로그인 사용자 이름</h4>

@@ -32,6 +32,7 @@ public class PostingController {
 
         List<Posting> allPosts = postingRepository.findAll();
         Collections.sort(allPosts, (o1,o2) -> o1.getTime().compareTo(o2.getTime()));
+
         model.addAttribute("user",loginUser);
         model.addAttribute("posting",allPosts);
         return "posting/posting";
@@ -77,31 +78,50 @@ public class PostingController {
         return "redirect:/posting";
     }
 
-    @PostMapping("/posting/search/writer")
-    public String searchWriter(@Login User loginUser, Model model,
-                         @ModelAttribute("postingForm") PostingForm postingForm) {
+    @GetMapping("/posting/search/postingId")
+    public String searchPostingId(@Login User user, Model model,
+                                  @ModelAttribute("postingForm") PostingForm postingForm){
+        model.addAttribute("user",user);
+        return "posting/searchById";
+    }
+
+    @PostMapping("/posting/search/postingId")
+    public String searchByPostingId(@Login User loginUser, Model model,
+                                    @ModelAttribute("postingForm") PostingForm postingForm){
         String searchContent = postingForm.getContent();
         log.info("포스팅 작성자 아이디 검색 : {}",searchContent);
 
         List<Posting> allSearchPosts = postingRepository.findAll().stream().
-                filter(posting -> posting.getUserId().equals(searchContent)).collect(Collectors.toList());
+                filter(posting -> posting.getUserId().contains(searchContent)).collect(Collectors.toList());
+
         Collections.sort(allSearchPosts, (o1, o2) -> o1.getTime().compareTo(o2.getTime()));
+
         model.addAttribute("user",loginUser);
         model.addAttribute("posting",allSearchPosts);
         return "posting/posting";
     }
 
+    @GetMapping("/posting/search/content")
+    public String searchPostingContent(@Login User user, Model model,
+                                  @ModelAttribute("postingForm") PostingForm postingForm){
+        model.addAttribute("user",user);
+        return "posting/searchByContent";
+    }
+
     @PostMapping("/posting/search/content")
-    public String searchContent(@Login User loginUser, Model model,
-                         @ModelAttribute("postingForm") PostingForm postingForm) {
+    public String searchByPostingContent(@Login User loginUser, Model model,
+                                    @ModelAttribute("postingForm") PostingForm postingForm){
         String searchContent = postingForm.getContent();
         log.info("포스팅 내용 검색 : {}",searchContent);
 
         List<Posting> allSearchPosts = postingRepository.findAll().stream().
-                filter(posting -> posting.getContent().equals(searchContent)).collect(Collectors.toList());
+                filter(posting -> posting.getContent().contains(searchContent)).collect(Collectors.toList());
+
         Collections.sort(allSearchPosts, (o1, o2) -> o1.getTime().compareTo(o2.getTime()));
+
         model.addAttribute("user",loginUser);
         model.addAttribute("posting",allSearchPosts);
         return "posting/posting";
     }
+
 }
