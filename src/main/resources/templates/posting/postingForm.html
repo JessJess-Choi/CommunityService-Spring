@@ -22,7 +22,7 @@
         <h2>포스팅</h2>
     </div>
 
-    <form th:action th:object="${postingForm}" method="post">
+    <form th:action th:object="${postingForm}" method="post" enctype="multipart/form-data">
 
         <div th:if="${#fields.hasGlobalErrors()}">
             <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
@@ -32,6 +32,7 @@
             <label for="loginId">포스팅 내용</label>
             <input type="text" id="loginId" th:field="*{content}" class="form-control"
                    th:errorclass="field-error">
+            <li>이미지 파일들<input type="file" multiple="multiple" name="imageFiles" ></li>
             <div class="field-error" th:errors="*{content}" />
         </div>
 

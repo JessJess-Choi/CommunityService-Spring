@@ -36,4 +36,8 @@ public class PostingRepository {
     public void clearStore(){
         store.clear();
     }
+
+    public void remove(long id) {
+        store.remove(id);
+    }
 }

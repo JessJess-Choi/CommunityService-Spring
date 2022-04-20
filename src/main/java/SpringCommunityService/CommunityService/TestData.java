@@ -31,9 +31,9 @@ public class TestData {
         Follow follow1 = new Follow(user1.getUserId(),user2.getUserId());
         Follow follow2 = new Follow(user1.getUserId(),user3.getUserId());
         Follow follow3 = new Follow(user2.getUserId(),user1.getUserId());
-        Posting posting1 = new Posting("1","test","fileId", LocalTime.now());
-        Posting posting2 = new Posting("1","test posting22","fileId", LocalTime.now().minusHours(10));
-        Posting posting3 = new Posting("2","test posting33","fileId", LocalTime.now().minusHours(30));
+//        Posting posting1 = new Posting("1","test","fileId", LocalTime.now());
+  //      Posting posting2 = new Posting("1","test posting22","fileId", LocalTime.now().minusHours(10));
+    //    Posting posting3 = new Posting("2","test posting33","fileId", LocalTime.now().minusHours(30));
         Message message1 = new Message("1","2","testMessage",LocalTime.now().minusSeconds(3L));
         Message message2 = new Message("2","1","testMessage2",LocalTime.now().minusSeconds(20L));
         Message message3 = new Message("1","2","testMessage3",LocalTime.now().minusSeconds(10L));
@@ -45,9 +45,9 @@ public class TestData {
         followRepository.save(follow1);
         followRepository.save(follow2);
         followRepository.save(follow3);
-        postingRepository.save(posting1);
-        postingRepository.save(posting2);
-        postingRepository.save(posting3);
+ //       postingRepository.save(posting1);
+   //     postingRepository.save(posting2);
+     //   postingRepository.save(posting3);
         messageRepository.save(message1);
         messageRepository.save(message2);
         messageRepository.save(message3);

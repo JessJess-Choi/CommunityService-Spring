@@ -39,6 +39,7 @@
   <span th:text="|작성자 : ${post.userId}|"></span>
   <span th:text="${post.content}"></span>
   <span th:text="|${post.time.hour}:${post.time.minute}|"></span>
+  <img th:each="imageFile : ${post.imageFiles}" th:src="|/images/${imageFile.getStoreFileName()}|" width="300" height="300"/>
   <a th:href="@{/posting/edit/{postingId} (postingId=${post.id})}" style="background-color: blue;color: black" role="button">편집</a>
   <br>
 </h4>
