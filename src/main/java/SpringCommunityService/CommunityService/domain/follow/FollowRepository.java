@@ -32,6 +32,9 @@ public class FollowRepository {
 
     public void followById(String loginId,String followId){
         List<String> followList = (ArrayList) store.get(loginId);
+        if(followList == null){
+            followList = new ArrayList<>();
+        }
         followList.add(followId);
         store.put(loginId,followList);
     }
