@@ -2,11 +2,16 @@ package SpringCommunityService.CommunityService.domain.user;
 
 import lombok.Data;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.validation.constraints.NotEmpty;
 
 @Data
+@Entity
 public class User {
 
+    @Id @GeneratedValue
     private Long id;
 
     @NotEmpty

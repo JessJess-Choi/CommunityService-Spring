@@ -22,7 +22,7 @@ public class TestData {
     private final FollowRepository followRepository;
     private final PostingRepository postingRepository;
     private final MessageRepository messageRepository;
-
+/*
     @PostConstruct
     public void init(){
         User user1 = new User("1","1","1@a.com","testName1");
@@ -53,4 +53,5 @@ public class TestData {
         messageRepository.save(message3);
         messageRepository.save(message4);
     }
+ */
 }

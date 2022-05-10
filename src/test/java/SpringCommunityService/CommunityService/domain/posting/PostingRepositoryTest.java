@@ -1,14 +1,8 @@
 package SpringCommunityService.CommunityService.domain.posting;
 
-import SpringCommunityService.CommunityService.domain.posting.Posting;
-import SpringCommunityService.CommunityService.domain.posting.PostingRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
-import java.time.LocalTime;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class PostingRepositoryTest {
 
@@ -17,6 +11,13 @@ class PostingRepositoryTest {
     @AfterEach
     void clear(){
         postingRepository.clearStore();
+    }
+
+    @Test
+    void a(){
+        String str1 = "1234";
+        String str2 = "abcd";
+        System.out.println(Long.parseLong(str1));
     }
 
     @Test
