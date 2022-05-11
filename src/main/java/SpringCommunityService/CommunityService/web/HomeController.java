@@ -22,14 +22,4 @@ public class HomeController {
         model.addAttribute("user",loginUser);
         return "loginHome";
     }
-
-    @GetMapping("/ssu_stagram.jpg")
-    public String homeLoginArgumentResolver1(@Login User loginUser, Model model){
-        log.info("/ssustagram.jpg 연결됨");
-        if(loginUser == null){
-            return "home";
-        }
-        model.addAttribute("user",loginUser);
-        return "loginHome";
-    }
 }

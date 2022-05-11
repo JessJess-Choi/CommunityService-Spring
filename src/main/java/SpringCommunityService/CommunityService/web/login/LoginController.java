@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Slf4j
 @Controller
@@ -39,7 +40,7 @@ public class LoginController {
             return "login/loginForm";
         }
 
-        User loginUser = loginService.login(loginForm.getUserId(),loginForm.getPassword());
+        User loginUser = loginService.loginJpa(loginForm.getUserId(),loginForm.getPassword());
         if(loginUser == null){
             log.info("잘못된 로그인 id : {}, pw : {}",loginForm.getUserId(),loginForm.getPassword());
             bindingResult.reject("loginFail","잘못된 id or pw");

@@ -21,12 +21,9 @@
   </form>
 </div>
 <br>
-<h4 class="mb-3" th:text="|${user.name} 님 프로필|"></h4>
+<h4 class="mb-3" th:text="|${user.name} 님 팔로우 현황|"></h4>
 <br>
-<h4 class="mb-3" th:text="|ID : ${user.userId}|"></h4>
-<br>
-<h4 class="mb-3" th:text="|email : ${user.email}|"></h4>
-<br>
+
 <h4 class="mb-3" th:text="|팔로우 중인 유저|"></h4>
 <h4 class="mb-3" th:each="f : ${follow}" >
     <span th:text="${f}"></span>

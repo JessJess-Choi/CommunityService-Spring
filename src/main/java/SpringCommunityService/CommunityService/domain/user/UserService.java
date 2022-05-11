@@ -43,4 +43,8 @@ public class UserService {
     public User findOne(Long id){
         return userRepository.findOneJpa(id);
     }
+
+    public List<User> findByLoginId(String loginId){
+        return userRepository.findByLoginIdJpa(loginId);
+    }
 }

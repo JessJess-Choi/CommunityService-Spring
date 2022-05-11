@@ -10,6 +10,7 @@ import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.domain.user.UserRepository;
 import SpringCommunityService.CommunityService.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -31,7 +32,6 @@ public class TestData {
         User user1 = new User("a","a","1@a.com","testName1");
         User user2 = new User("b","b","2@a.com","testName2");
         User user3 = new User("c","c","3@a.com","testName3");
-
 
         userService.joinJpa(user1);
         userService.joinJpa(user2);
