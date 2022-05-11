@@ -28,9 +28,9 @@ public class TestData {
         User user1 = new User("1","1","1@a.com","testName1");
         User user2 = new User("2","2","2@a.com","testName2");
         User user3 = new User("3","3","3@a.com","testName3");
-        Follow follow1 = new Follow(user1.getUserId(),user2.getUserId());
-        Follow follow2 = new Follow(user1.getUserId(),user3.getUserId());
-        Follow follow3 = new Follow(user2.getUserId(),user1.getUserId());
+        Follow follow1 = new Follow(user1.getLoginId(),user2.getLoginId());
+        Follow follow2 = new Follow(user1.getLoginId(),user3.getLoginId());
+        Follow follow3 = new Follow(user2.getLoginId(),user1.getLoginId());
 //        Posting posting1 = new Posting("1","test","fileId", LocalTime.now());
   //      Posting posting2 = new Posting("1","test posting22","fileId", LocalTime.now().minusHours(10));
     //    Posting posting3 = new Posting("2","test posting33","fileId", LocalTime.now().minusHours(30));

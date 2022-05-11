@@ -16,10 +16,8 @@ public class UserRepository {
     private EntityManager em;
 
     public User save(User user){
- //       user.setId(++sequence);
- //       store.put(user.getId(),user);
- //       return user;
-        em.persist(user);
+        user.setId(++sequence);
+        store.put(user.getId(),user);
         return user;
     }
 
@@ -32,7 +30,7 @@ public class UserRepository {
     }
 
     public Optional<User> findByLoginId(String loginId){
-        return findAll().stream().filter(user -> user.getUserId()
+        return findAll().stream().filter(user -> user.getLoginId()
                 .equals(loginId)).findFirst();
     }
 
@@ -42,5 +40,26 @@ public class UserRepository {
 
     public void clearStore(){
         store.clear();
+    }
+
+    //JPA 관련 함수들
+    public User saveJpa(User user){
+        em.persist(user);
+        return user;
+    }
+
+    public User findOneJpa(Long id){
+        return em.find(User.class,id);
+    }
+
+    public List<User> findAllJpa(){
+        return em.createQuery("select u from User u",User.class)
+                .getResultList();
+    }
+
+    public List<User> findByNameJpa(String name){
+        return em.createQuery("select u from User u where u.name = :name",User.class)
+                .setParameter("name",name)
+                .getResultList();
     }
 }

@@ -22,14 +22,14 @@ public class ProfileController {
 
     @GetMapping("/profile")
     public String userProfile(@Login User loginUser, Model model){
-        log.info("id : {}, loginId : {} 프로필 접속",loginUser.getId(),loginUser.getUserId());
+        log.info("id : {}, loginId : {} 프로필 접속",loginUser.getId(),loginUser.getLoginId());
         model.addAttribute("user",loginUser);
         return "users/userProfile";
     }
 
     @PostMapping("/profile")
     public String goToHome(@Login User loginUser, Model model){
-        log.info("id : {}, loginId : {} 프로필 접속 후 홈으로 돌아감",loginUser.getId(),loginUser.getUserId());
+        log.info("id : {}, loginId : {} 프로필 접속 후 홈으로 돌아감",loginUser.getId(),loginUser.getLoginId());
         model.addAttribute("user",loginUser);
         return "redirect:/";
     }

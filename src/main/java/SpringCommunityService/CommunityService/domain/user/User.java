@@ -1,29 +1,31 @@
 package SpringCommunityService.CommunityService.domain.user;
 
-import lombok.Data;
+import SpringCommunityService.CommunityService.domain.follow.Follow;
+import SpringCommunityService.CommunityService.domain.message.Message;
+import SpringCommunityService.CommunityService.domain.posting.Posting;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
+@Getter @Setter
 @Entity
 public class User {
 
     @Id @GeneratedValue
+    @Column(name = "user_id")
     private Long id;
 
-    @NotEmpty
-    private String userId;
-    @NotEmpty
+
+    private String loginId;
     private String password;
-    @NotEmpty
     private String email;
-    @NotEmpty
     private String name;
 
-    public User(){
+
+ /*   public User(){
     }
 
     public User(String userId,String password,String email,String name){
@@ -32,4 +34,6 @@ public class User {
         this.email = email;
         this.name = name;
     }
+
+  */
 }

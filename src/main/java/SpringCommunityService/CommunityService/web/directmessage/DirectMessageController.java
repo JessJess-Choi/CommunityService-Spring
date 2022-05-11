@@ -29,15 +29,15 @@ public class DirectMessageController {
 
     @GetMapping("/directmessage")
     public String userProfile(@Login User loginUser, Model model){
-        log.info("id : {}, loginId : {} DM 접속",loginUser.getId(),loginUser.getUserId());
+        log.info("id : {}, loginId : {} DM 접속",loginUser.getId(),loginUser.getLoginId());
         model.addAttribute("user",loginUser);
-        model.addAttribute("follow",followRepository.findById(loginUser.getUserId()));
+        model.addAttribute("follow",followRepository.findById(loginUser.getLoginId()));
         return "directmessage/directmessage";
     }
 
     @PostMapping("/directmessage")
     public String goToHome(@Login User loginUser, Model model){
-        log.info("id : {}, loginId : {} DM 접속 후 홈으로 돌아감",loginUser.getId(),loginUser.getUserId());
+        log.info("id : {}, loginId : {} DM 접속 후 홈으로 돌아감",loginUser.getId(),loginUser.getLoginId());
         model.addAttribute("user",loginUser);
         return "redirect:/";
     }
@@ -47,7 +47,7 @@ public class DirectMessageController {
                               @Login User loginUser, Model model,
                               @ModelAttribute("messageForm") MessageForm messageForm){
 
-        List<Message> messageList = messageRepository.findByLoginId(receiverId,loginUser.getUserId());
+        List<Message> messageList = messageRepository.findByLoginId(receiverId,loginUser.getLoginId());
         Collections.sort(messageList, (o1,o2) -> o1.getLocalTime().compareTo(o2.getLocalTime()));
   /*      Collections.sort(messageList, new Comparator<Message>() {
             @Override
@@ -68,7 +68,7 @@ public class DirectMessageController {
                               @Login User loginUser, Model model,
                               @ModelAttribute("messageForm") MessageForm messageForm){
 
-        messageRepository.save(new Message(loginUser.getUserId(),receiverId,messageForm.getMessage(), LocalTime.now()));
+        messageRepository.save(new Message(loginUser.getLoginId(),receiverId,messageForm.getMessage(), LocalTime.now()));
         return "redirect:/directmessage/" + receiverId;
     }
 

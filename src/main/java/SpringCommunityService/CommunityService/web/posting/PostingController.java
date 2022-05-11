@@ -39,8 +39,8 @@ public class PostingController {
     public String userPosting(@Login User loginUser, Model model,
                               @ModelAttribute("postingForm") PostingForm postingForm){
         //db에서 값 읽어와서 모델에 넣고 contents  렌더링 => contents/contents도 수정
-        log.info("id : {}, loginId : {} 게시판 접속",loginUser.getId(),loginUser.getUserId());
-        log.info("{} posting :  {}",loginUser.getUserId(),postingRepository.findById(1L));
+        log.info("id : {}, loginId : {} 게시판 접속",loginUser.getId(),loginUser.getLoginId());
+        log.info("{} posting :  {}",loginUser.getLoginId(),postingRepository.findById(1L));
 
         List<Posting> allPosts = postingRepository.findAll();
         Collections.sort(allPosts, (o1,o2) -> o2.getTime().compareTo(o1.getTime()));
@@ -52,7 +52,7 @@ public class PostingController {
 
     @PostMapping("/posting")
     public String goToHome(@Login User loginUser, Model model){
-        log.info("id : {}, loginId : {} 게시판 접속 후 홈으로 돌아감",loginUser.getId(),loginUser.getUserId());
+        log.info("id : {}, loginId : {} 게시판 접속 후 홈으로 돌아감",loginUser.getId(),loginUser.getLoginId());
         model.addAttribute("user",loginUser);
         return "redirect:/";
     }
@@ -67,7 +67,7 @@ public class PostingController {
                                        @Login User loginUser) throws IOException {
         List<UploadFile> storeImageFiles = fileStore.storeFiles(postingForm.getImageFiles());
         log.info("newContent Mapping");
-        Posting posting = new Posting(loginUser.getUserId(),postingForm.getContent(), storeImageFiles, LocalTime.now());
+        Posting posting = new Posting(loginUser.getLoginId(),postingForm.getContent(), storeImageFiles, LocalTime.now());
         postingRepository.save(posting);
         log.info("{}",postingForm.getContent());
         return "redirect:/posting";
@@ -97,7 +97,7 @@ public class PostingController {
         log.info("{}",postingForm);
 
         List<UploadFile> storeImageFiles = fileStore.storeFiles(postingForm.getImageFiles());
-        Posting posting = new Posting(loginUser.getUserId(),postingForm.getContent(), storeImageFiles, LocalTime.now());
+        Posting posting = new Posting(loginUser.getLoginId(),postingForm.getContent(), storeImageFiles, LocalTime.now());
         postingRepository.set(Long.parseLong(postingId),posting);
         log.info("{}",posting);
         log.info("edit End");
@@ -118,7 +118,7 @@ public class PostingController {
         log.info("포스팅 작성자 아이디 검색 : {}",searchContent);
 
         List<Posting> allSearchPosts = postingRepository.findAll().stream()
-                .filter(posting -> posting.getUserId().contains(searchContent))
+                .filter(posting -> posting.getLoginId().contains(searchContent))
                 .collect(Collectors.toList());
 
         Collections.sort(allSearchPosts, (o1, o2) -> o2.getTime().compareTo(o1.getTime()));

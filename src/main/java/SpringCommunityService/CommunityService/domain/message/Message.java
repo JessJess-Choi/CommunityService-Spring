@@ -1,22 +1,31 @@
 package SpringCommunityService.CommunityService.domain.message;
 
+import SpringCommunityService.CommunityService.domain.user.User;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
+@Getter @Setter
+@Entity
 public class Message {
 
+    @Id @GeneratedValue
+    @Column(name = "message_id")
     private Long id;
 
-    @NotEmpty
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user")
+    private User user;
+
     private String senderId;
-    @NotEmpty
     private String receiverId;
-    @NotEmpty
     private String message;
-    @NotEmpty
     private LocalTime localTime;
 
     public Message(){
