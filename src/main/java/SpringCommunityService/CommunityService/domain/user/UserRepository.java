@@ -57,9 +57,15 @@ public class UserRepository {
                 .getResultList();
     }
 
-    public List<User> findByNameJpa(String name){
-        return em.createQuery("select u from User u where u.name = :name",User.class)
-                .setParameter("name",name)
+    public List<User> findByLoginIdJpa(String loginId){
+        return em.createQuery("select u from User u where u.loginId = :loginId",User.class)
+                .setParameter("loginId",loginId)
+                .getResultList();
+    }
+
+    public List<User> findByEmailJpa(String email){
+        return em.createQuery("select u from User u where u.email = :email",User.class)
+                .setParameter("email",email)
                 .getResultList();
     }
 }
