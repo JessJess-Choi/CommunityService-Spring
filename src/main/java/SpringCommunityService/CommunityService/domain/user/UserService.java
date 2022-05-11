@@ -37,7 +37,7 @@ public class UserService {
     }
 
     public List<User> findUsers(){
-        return userRepository.findAll();
+        return userRepository.findAllJpa();
     }
 
     public User findOne(Long id){

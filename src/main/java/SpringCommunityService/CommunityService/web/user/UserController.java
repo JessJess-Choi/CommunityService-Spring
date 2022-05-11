@@ -4,6 +4,7 @@ import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.domain.user.UserRepository;
 import SpringCommunityService.CommunityService.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,7 @@ import javax.validation.Valid;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/users")
+@Slf4j
 public class UserController {
 
 //    private final UserRepository userRepository;
@@ -43,6 +45,7 @@ public class UserController {
             bindingResult.reject("회원가입 실패","잘못된 id or email");
             return "users/addUserForm";
         }
+        log.info("회원가입 진행 아이디:{}, 이름:{}, 이메일:{}",user.getLoginId(), user.getName(), user.getEmail());
         return "redirect:/";
     }
 }
