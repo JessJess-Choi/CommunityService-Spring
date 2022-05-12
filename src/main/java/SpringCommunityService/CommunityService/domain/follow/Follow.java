@@ -24,11 +24,11 @@ public class Follow {
     private String followingId;
 
 
-
     public Follow(){
     }
 
-    public Follow(String userId,String followId){
+    public Follow(String userId,String followId,User user){
+        this.user = user;
         this.userId = userId;
         this.followingId = followId;
     }

@@ -2,6 +2,7 @@ package SpringCommunityService.CommunityService;
 
 import SpringCommunityService.CommunityService.domain.follow.Follow;
 import SpringCommunityService.CommunityService.domain.follow.FollowRepository;
+import SpringCommunityService.CommunityService.domain.follow.FollowService;
 import SpringCommunityService.CommunityService.domain.message.Message;
 import SpringCommunityService.CommunityService.domain.message.MessageRepository;
 import SpringCommunityService.CommunityService.domain.posting.Posting;
@@ -26,17 +27,23 @@ public class TestData {
 //    private final MessageRepository messageRepository;
 
     private final UserService userService;
+    private final FollowService followService;
 
     @PostConstruct
     public void initForJpa(){
         User user1 = new User("a","a","1@a.com","testName1");
         User user2 = new User("b","b","2@a.com","testName2");
         User user3 = new User("c","c","3@a.com","testName3");
+        Follow follow1 = new Follow(user1.getLoginId(),user2.getLoginId(),user1);
+        Follow follow2 = new Follow(user1.getLoginId(),user3.getLoginId(),user1);
+        Follow follow3 = new Follow(user2.getLoginId(),user1.getLoginId(),user2);
 
         userService.joinJpa(user1);
         userService.joinJpa(user2);
         userService.joinJpa(user3);
-
+        followService.joinJpa(follow1);
+        followService.joinJpa(follow2);
+        followService.joinJpa(follow3);
     }
 /*
     @PostConstruct

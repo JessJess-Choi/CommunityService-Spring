@@ -25,8 +25,6 @@ public class UserService {
     }
 
     private void validateDuplicateUser(User user) {
-        user.getLoginId();
-        user.getEmail();
 
         List<User> findUsersByLoginId = userRepository.findByLoginIdJpa(user.getLoginId());
         List<User> findUsersByEmail = userRepository.findByEmailJpa(user.getEmail());

@@ -2,8 +2,10 @@ package SpringCommunityService.CommunityService.web.follow;
 
 import SpringCommunityService.CommunityService.domain.follow.Follow;
 import SpringCommunityService.CommunityService.domain.follow.FollowRepository;
+import SpringCommunityService.CommunityService.domain.follow.FollowService;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.domain.user.UserRepository;
+import SpringCommunityService.CommunityService.domain.user.UserService;
 import SpringCommunityService.CommunityService.web.argumentresolver.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +24,10 @@ public class FollowController {
     private final UserRepository userRepository;
     private final FollowRepository followRepository;
 
-    @GetMapping("/follow")
+    private final UserService userService;
+    private final FollowService followService;
+
+//    @GetMapping("/follow")
     public String followPage(@Login User loginUser, Model model){
         log.info("id : {}, loginId : {} 팔로우 현황 접속",loginUser.getId(),loginUser.getLoginId());
         log.info("{} 팔로우 아이디 리스트 : {}",loginUser.getLoginId(),followRepository.findById(loginUser.getLoginId()));
@@ -39,8 +44,8 @@ public class FollowController {
         return "redirect:/";
     }
 
-    @GetMapping("/unfollowToFollow/{followId}")
-    public String unfollowToFollow(@Login User loginUser, Model model, @PathVariable("followId") String followId){
+//    @GetMapping("/unfollowToFollow/{followId}")
+ /*   public String unfollowToFollow(@Login User loginUser, Model model, @PathVariable("followId") String followId){
         log.info("{} 유저가 {} 유저 팔로우 시작");
         Follow follow = new Follow(loginUser.getLoginId(),followId);
         followRepository.followById(loginUser.getLoginId(),followId);
@@ -49,8 +54,8 @@ public class FollowController {
         model.addAttribute("unFollow",findExceptId(loginUser.getLoginId()));
         return "redirect:/follow";
     }
-
-    @GetMapping("/followToUnfollow/{followId}")
+*/
+//    @GetMapping("/followToUnfollow/{followId}")
     public String followToUnfollow(@Login User loginUser, Model model, @PathVariable("followId") String followId){
         log.info("{} 유저가 {} 유저 언팔로우",loginUser.getLoginId(),followId);
         followRepository.unfollowById(loginUser.getLoginId(),followId);
@@ -86,5 +91,55 @@ public class FollowController {
         log.info("{} : {}",id,userFollows);
         log.info("ret : {}",ret);
         return ret;
+    }
+
+    //JPA 함수들
+
+    @GetMapping("/follow")
+    public String followPageJpa(@Login User loginUser, Model model){
+        log.info("id : {}, loginId : {} 팔로우 현황 접속",loginUser.getId(),loginUser.getLoginId());
+        log.info("{} 팔로우 아이디 리스트 : {}",loginUser.getLoginId(),followService.findByLoginId(loginUser.getLoginId()));
+        model.addAttribute("user",loginUser);
+        model.addAttribute("follow",followService.findByLoginId(loginUser.getLoginId()));
+        model.addAttribute("unFollow",findExceptIdJpa(loginUser));
+        return "follow/follow";
+    }
+
+
+
+    @GetMapping("/unfollowToFollow/{followId}")
+    public String unfollowToFollowJpa(@Login User loginUser, Model model, @PathVariable("followId") String followId){
+        log.info("{} 유저가 {} 유저 팔로우 시작");
+        Follow follow = new Follow(loginUser.getLoginId(),followId,loginUser);
+        followService.joinJpa(follow);
+        model.addAttribute("user",loginUser);
+        model.addAttribute("follow",followService.findById(loginUser));
+        model.addAttribute("unFollow",findExceptId(loginUser.getLoginId()));
+        return "redirect:/follow";
+    }
+
+    @GetMapping("/followToUnfollow/{followId}")
+    public String followToUnfollowJpa(@Login User loginUser, Model model, @PathVariable("followId") String followId){
+        log.info("{} 유저가 {} 유저 언팔로우",loginUser.getLoginId(),followId);
+        followService.unfollowById(followService.findOne(loginUser, followId));
+        model.addAttribute("user",loginUser);
+        model.addAttribute("follow",followService.findById(loginUser));
+        model.addAttribute("unFollow",findExceptId(loginUser.getLoginId()));
+      //  log.info("{}",followService.findById(1L));
+        return "redirect:/follow";
+    }
+
+    private List<String> findExceptIdJpa(User loginUser) {
+        List<User> all = userService.findUsers();
+        List<String> notFollow = new ArrayList<>();
+        List<String> userFollows = followService.findByLoginId(loginUser.getLoginId());
+        log.info("userfollow : {}",userFollows);
+        all.forEach((user) -> {
+            log.info("{}",user.getLoginId());
+            if(!userFollows.contains(user.getLoginId()) && !user.getLoginId().equals(loginUser.getLoginId())) {
+                notFollow.add(user.getLoginId());
+            }
+        });
+        return notFollow;
     }
 }
