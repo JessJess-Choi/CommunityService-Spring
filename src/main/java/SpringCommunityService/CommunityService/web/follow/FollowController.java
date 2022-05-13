@@ -114,7 +114,7 @@ public class FollowController {
         followService.joinJpa(follow);
         model.addAttribute("user",loginUser);
         model.addAttribute("follow",followService.findById(loginUser));
-        model.addAttribute("unFollow",findExceptId(loginUser.getLoginId()));
+        model.addAttribute("unFollow",findExceptIdJpa(loginUser));
         return "redirect:/follow";
     }
 
@@ -124,7 +124,7 @@ public class FollowController {
         followService.unfollowById(followService.findOne(loginUser, followId));
         model.addAttribute("user",loginUser);
         model.addAttribute("follow",followService.findById(loginUser));
-        model.addAttribute("unFollow",findExceptId(loginUser.getLoginId()));
+        model.addAttribute("unFollow",findExceptIdJpa(loginUser));
       //  log.info("{}",followService.findById(1L));
         return "redirect:/follow";
     }
