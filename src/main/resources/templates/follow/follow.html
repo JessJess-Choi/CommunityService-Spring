@@ -26,14 +26,14 @@
 
 <h4 class="mb-3" th:text="|팔로우 중인 유저|"></h4>
 <h4 class="mb-3" th:each="f : ${follow}" >
-    <span th:text="${f}"></span>
-    <a th:href="@{/followToUnfollow/{id} (id=${f})}" style="background-color: blue;color: black" role="button">언팔로우</a>
+    <span th:text="${f.name}"></span>
+    <a th:href="@{/followToUnfollow/{id} (id=${f.id})}" style="background-color: blue;color: black" role="button">언팔로우</a>
 </h4>
 <br>
 <h4 class="mb-3" th:text="|팔로우 안하는 유저|"></h4>
 <h4 class="mb-3" th:each="f : ${unFollow}">
-  <span th:text="${f}"></span>
-  <a th:href="@{/unfollowToFollow/{id} (id=${f})}" style="background-color: red;color: black" role="button">팔로우</a>
+  <span th:text="${f.name}"></span>
+  <a th:href="@{/unfollowToFollow/{id} (id=${f.id})}" style="background-color: red;color: black" role="button">팔로우</a>
   </form>
 </h4>
 </body>

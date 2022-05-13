@@ -60,7 +60,7 @@ public class FollowRepository {
     }
 
     public List<User> findByIdJpa(User user){
-        return em.createQuery("select u from User u where u.loginId in (select f from Follow f where f.user = :id)",User.class)
+        return em.createQuery("select u from User u where u.loginId in (select f.followingId from Follow f where f.user = :id)",User.class)
                                     .setParameter("id",user)
                                     .getResultList();
     }

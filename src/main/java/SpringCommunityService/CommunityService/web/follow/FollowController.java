@@ -98,9 +98,9 @@ public class FollowController {
     @GetMapping("/follow")
     public String followPageJpa(@Login User loginUser, Model model){
         log.info("id : {}, loginId : {} 팔로우 현황 접속",loginUser.getId(),loginUser.getLoginId());
-        log.info("{} 팔로우 아이디 리스트 : {}",loginUser.getLoginId(),followService.findByLoginId(loginUser.getLoginId()));
+        log.info("{} 팔로우 아이디 리스트 : {}",loginUser.getLoginId(),followService.findById(loginUser));
         model.addAttribute("user",loginUser);
-        model.addAttribute("follow",followService.findByLoginId(loginUser.getLoginId()));
+        model.addAttribute("follow",followService.findById(loginUser));
         model.addAttribute("unFollow",findExceptIdJpa(loginUser));
         return "follow/follow";
     }
@@ -110,8 +110,7 @@ public class FollowController {
     @GetMapping("/unfollowToFollow/{followId}")
     public String unfollowToFollowJpa(@Login User loginUser, Model model, @PathVariable("followId") String followId){
         log.info("{} 유저가 {} 유저 팔로우 시작");
-        Follow follow = new Follow(loginUser.getLoginId(),followId,loginUser);
-        followService.joinJpa(follow);
+        followService.joinJpa(new Follow(loginUser.getLoginId(),userService.findOne(Long.parseLong(followId)).getLoginId(),loginUser));
         model.addAttribute("user",loginUser);
         model.addAttribute("follow",followService.findById(loginUser));
         model.addAttribute("unFollow",findExceptIdJpa(loginUser));
@@ -121,7 +120,7 @@ public class FollowController {
     @GetMapping("/followToUnfollow/{followId}")
     public String followToUnfollowJpa(@Login User loginUser, Model model, @PathVariable("followId") String followId){
         log.info("{} 유저가 {} 유저 언팔로우",loginUser.getLoginId(),followId);
-        followService.unfollowById(followService.findOne(loginUser, followId));
+        followService.unfollowById(followService.findOne(loginUser, userService.findOne(Long.parseLong(followId)).getLoginId()));
         model.addAttribute("user",loginUser);
         model.addAttribute("follow",followService.findById(loginUser));
         model.addAttribute("unFollow",findExceptIdJpa(loginUser));
@@ -129,15 +128,15 @@ public class FollowController {
         return "redirect:/follow";
     }
 
-    private List<String> findExceptIdJpa(User loginUser) {
-        List<User> all = userService.findUsers();
-        List<String> notFollow = new ArrayList<>();
+    private List<User> findExceptIdJpa(User loginUser) {
+//        List<User> all = userService.findUsers();
+        List<User> notFollow = new ArrayList<>();
         List<String> userFollows = followService.findByLoginId(loginUser.getLoginId());
         log.info("userfollow : {}",userFollows);
-        all.forEach((user) -> {
-            log.info("{}",user.getLoginId());
+        userService.findUsers().forEach((user) -> {
+//            log.info("{}",user.getLoginId());
             if(!userFollows.contains(user.getLoginId()) && !user.getLoginId().equals(loginUser.getLoginId())) {
-                notFollow.add(user.getLoginId());
+                notFollow.add(user);
             }
         });
         return notFollow;
