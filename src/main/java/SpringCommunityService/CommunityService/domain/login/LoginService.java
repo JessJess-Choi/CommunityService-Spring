@@ -36,8 +36,9 @@ public class LoginService {
     }
 
     public User loginJpa(String userId, String password){
-        return em.createQuery("select u from User u where u.loginId = :userId",User.class)
+        return em.createQuery("select u from User u where u.loginId = :userId and u.password = :password",User.class)
                 .setParameter("userId",userId)
+                .setParameter("password",password)
                 .getSingleResult();
     }
 }

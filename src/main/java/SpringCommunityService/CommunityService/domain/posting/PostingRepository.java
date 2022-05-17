@@ -1,5 +1,6 @@
 package SpringCommunityService.CommunityService.domain.posting;
 
+import SpringCommunityService.CommunityService.domain.user.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -54,6 +55,12 @@ public class PostingRepository {
 
     public List<Posting> findAllJpa(){
         return em.createQuery("select p from Posting p",Posting.class)
+                .getResultList();
+    }
+
+    public List<Posting> findByUser(User loginUser){
+        return em.createQuery("select p from Posting p where p.user = :user",Posting.class)
+                .setParameter("user",loginUser)
                 .getResultList();
     }
 

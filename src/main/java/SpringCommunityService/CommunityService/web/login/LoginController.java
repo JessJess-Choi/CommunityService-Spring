@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -40,7 +41,13 @@ public class LoginController {
             return "login/loginForm";
         }
 
-        User loginUser = loginService.loginJpa(loginForm.getUserId(),loginForm.getPassword());
+        User loginUser = null;
+        try {
+            loginUser = loginService.loginJpa(loginForm.getUserId(), loginForm.getPassword());
+        }catch(NoResultException e){
+            bindingResult.reject("loginFail","잘못된 id or pw");
+            return "login/loginForm";
+        }
         if(loginUser == null){
             log.info("잘못된 로그인 id : {}, pw : {}",loginForm.getUserId(),loginForm.getPassword());
             bindingResult.reject("loginFail","잘못된 id or pw");

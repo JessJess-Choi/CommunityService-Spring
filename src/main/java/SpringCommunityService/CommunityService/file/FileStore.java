@@ -1,9 +1,7 @@
 package SpringCommunityService.CommunityService.file;
 
-import SpringCommunityService.CommunityService.domain.UploadFile;
 import SpringCommunityService.CommunityService.domain.image.Image;
 import SpringCommunityService.CommunityService.domain.posting.Posting;
-import SpringCommunityService.CommunityService.domain.posting.PostingRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;

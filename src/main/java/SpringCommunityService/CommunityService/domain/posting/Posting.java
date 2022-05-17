@@ -3,12 +3,15 @@ package SpringCommunityService.CommunityService.domain.posting;
 import SpringCommunityService.CommunityService.domain.image.Image;
 import SpringCommunityService.CommunityService.domain.user.User;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @Entity
 public class Posting {
 
@@ -20,7 +23,7 @@ public class Posting {
     @JoinColumn(name = "user")
     private User user;
 
-    private String loginId;
+    private String userName;
     private String content;
     @Transient
     private List<Image> images;
@@ -29,9 +32,9 @@ public class Posting {
     public Posting(){
     }
 
-    public Posting(User user,String loginId,String content,LocalTime time){
+    public Posting(User user,String userName,String content,LocalTime time){
         this.user = user;
-        this.loginId = loginId;
+        this.userName = userName;
         this.content = content;
         this.time = time;
     }

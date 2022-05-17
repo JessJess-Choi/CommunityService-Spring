@@ -1,6 +1,5 @@
 package SpringCommunityService.CommunityService.web.posting;
 
-import SpringCommunityService.CommunityService.domain.UploadFile;
 import SpringCommunityService.CommunityService.domain.image.Image;
 import SpringCommunityService.CommunityService.domain.image.ImageService;
 import SpringCommunityService.CommunityService.domain.posting.Posting;
@@ -13,18 +12,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.util.UriUtils;
 
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalTime;
 import java.util.Collections;
 import java.util.List;
@@ -128,14 +122,14 @@ public class PostingController {
         String searchContent = postingForm.getContent();
         log.info("포스팅 작성자 아이디 검색 : {}",searchContent);
 
-        List<Posting> allSearchPosts = postingRepository.findAll().stream()
-                .filter(posting -> posting.getLoginId().contains(searchContent))
-                .collect(Collectors.toList());
+     //   List<Posting> allSearchPosts = postingRepository.findAll().stream()
+       //         .filter(posting -> posting.getLoginId().contains(searchContent))
+         //       .collect(Collectors.toList());
 
-        Collections.sort(allSearchPosts, (o1, o2) -> o2.getTime().compareTo(o1.getTime()));
+     //   Collections.sort(allSearchPosts, (o1, o2) -> o2.getTime().compareTo(o1.getTime()));
 
         model.addAttribute("user",loginUser);
-        model.addAttribute("posting",allSearchPosts);
+  //      model.addAttribute("posting",allSearchPosts);
         return "posting/posting";
     }
 
@@ -180,37 +174,10 @@ public class PostingController {
         return "posting/posting";
     }
 
-    @PostMapping("/posting/search/postingId")
-    public String searchByPostingIdJpa(@Login User loginUser, Model model,
-                                    @ModelAttribute("postingForm") PostingForm postingForm){
-        String searchContent = postingForm.getContent();
-        log.info("포스팅 작성자 아이디 검색 : {}",searchContent);
-
-        List<Posting> allSearchPosts = postingRepository.findAll().stream()
-                .filter(posting -> posting.getLoginId().contains(searchContent))
-                .collect(Collectors.toList());
-
-        Collections.sort(allSearchPosts, (o1, o2) -> o2.getTime().compareTo(o1.getTime()));
-
-        model.addAttribute("user",loginUser);
-        model.addAttribute("posting",allSearchPosts);
-        return "posting/posting";
-    }
-
-    @GetMapping("/posting/edit/{postingId}")
-    public String editPostingJpa(@PathVariable("postingId") String postingId, Model model,
-                              @ModelAttribute("postingForm") PostingForm postingForm){
-        log.info("editPosting : {}",postingId);
-        Posting posting = postingRepository.findById(Long.parseLong(postingId));
-        model.addAttribute("posting",posting);
-        log.info("editPosting End");
-        return "posting/edit";
-    }
-
     @PostMapping("/posting/add")
     public String addContentJpa(@Valid @ModelAttribute PostingForm postingForm,
                              @Login User loginUser) throws IOException {
-        Posting posting = new Posting(loginUser,loginUser.getLoginId(),postingForm.getContent(),LocalTime.now());
+        Posting posting = new Posting(loginUser,loginUser.getName(),postingForm.getContent(),LocalTime.now());
         List<Image> storeImages = fileStore.storeFiles(posting,postingForm.getImageFiles());
         posting.setImages(storeImages);
         postingService.joinJpa(posting);
@@ -218,5 +185,37 @@ public class PostingController {
         log.info("newContent Mapping");
         log.info("{}",postingForm.getContent());
         return "redirect:/posting";
+    }
+
+    @PostMapping("/posting/search/postingId")
+    public String searchByPostingIdJpa(@Login User loginUser, Model model,
+                                       @ModelAttribute("postingForm") PostingForm postingForm){
+        String searchContent = postingForm.getContent();
+        log.info("포스팅 작성자 아이디 검색 : {}",searchContent);
+        List<Posting> allSearchPosts = postingService.findByUser(loginUser);
+        allSearchPosts.forEach(posting -> posting.setImages(imageService.findByPosting(posting)));
+        Collections.sort(allSearchPosts, (o1, o2) -> o2.getTime().compareTo(o1.getTime()));
+
+ /*       List<Posting> allSearchPosts = postingRepository.findAll().stream()
+                .filter(posting -> posting.getLoginId().contains(searchContent))
+                .collect(Collectors.toList());
+
+        Collections.sort(allSearchPosts, (o1, o2) -> o2.getTime().compareTo(o1.getTime()));
+
+
+  */
+        model.addAttribute("user",loginUser);
+        model.addAttribute("posting",allSearchPosts);
+        return "posting/posting";
+    }
+
+    @GetMapping("/posting/edit/{postingId}")
+    public String editPostingJpa(@PathVariable("postingId") String postingId, Model model,
+                                 @ModelAttribute("postingForm") PostingForm postingForm){
+        log.info("editPosting : {}",postingId);
+        Posting posting = postingRepository.findById(Long.parseLong(postingId));
+        model.addAttribute("posting",posting);
+        log.info("editPosting End");
+        return "posting/edit";
     }
 }

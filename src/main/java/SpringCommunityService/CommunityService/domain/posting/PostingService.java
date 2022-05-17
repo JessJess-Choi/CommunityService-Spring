@@ -1,5 +1,6 @@
 package SpringCommunityService.CommunityService.domain.posting;
 
+import SpringCommunityService.CommunityService.domain.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,5 +26,9 @@ public class PostingService {
 
     public List<Posting> findAll(){
         return postingRepository.findAllJpa();
+    }
+
+    public List<Posting> findByUser(User loginUser){
+        return postingRepository.findByUser(loginUser);
     }
 }
