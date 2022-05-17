@@ -1,12 +1,10 @@
 package SpringCommunityService.CommunityService.domain.posting;
 
-import SpringCommunityService.CommunityService.domain.UploadFile;
+import SpringCommunityService.CommunityService.domain.image.Image;
 import SpringCommunityService.CommunityService.domain.user.User;
 import lombok.Data;
-import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -24,16 +22,17 @@ public class Posting {
 
     private String loginId;
     private String content;
- //   private List<UploadFile> imageFiles;
+    @Transient
+    private List<Image> images;
     private LocalTime time;
 
     public Posting(){
     }
 
-    public Posting(String loginId,String content,List<UploadFile> imageFiles,LocalTime time){
+    public Posting(User user,String loginId,String content,LocalTime time){
+        this.user = user;
         this.loginId = loginId;
         this.content = content;
-//        this.imageFiles = imageFiles;
         this.time = time;
     }
 }

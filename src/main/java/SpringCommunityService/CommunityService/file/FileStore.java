@@ -1,6 +1,8 @@
 package SpringCommunityService.CommunityService.file;
 
 import SpringCommunityService.CommunityService.domain.UploadFile;
+import SpringCommunityService.CommunityService.domain.image.Image;
+import SpringCommunityService.CommunityService.domain.posting.Posting;
 import SpringCommunityService.CommunityService.domain.posting.PostingRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -22,17 +24,17 @@ public class FileStore {
         return fileDir + filename;
     }
 
-    public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles) throws IOException {
-        List<UploadFile> storeFileResult = new ArrayList<>();
+    public List<Image> storeFiles(Posting posting, List<MultipartFile> multipartFiles) throws IOException {
+        List<Image> storeFileResult = new ArrayList<>();
         for(MultipartFile multipartFile : multipartFiles){
             if(!multipartFile.isEmpty()) {
-                storeFileResult.add(storeFile(multipartFile));
+                storeFileResult.add(storeFile(posting,multipartFile));
             }
         }
         return storeFileResult;
     }
 
-    public UploadFile storeFile(MultipartFile multipartFile) throws IOException {
+    public Image storeFile(Posting posting, MultipartFile multipartFile) throws IOException {
         if(multipartFile.isEmpty()){
             return null;
         }
@@ -42,7 +44,7 @@ public class FileStore {
         String storeFileName = createStoreFileName(originalFileName, uuid);
         multipartFile.transferTo(new File(getFullPath(storeFileName)));
 
-        return new UploadFile(originalFileName, storeFileName);
+        return new Image(posting, originalFileName, storeFileName);
     }
 
 

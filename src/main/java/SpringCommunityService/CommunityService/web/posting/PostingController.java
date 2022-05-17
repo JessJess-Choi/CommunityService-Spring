@@ -1,8 +1,11 @@
 package SpringCommunityService.CommunityService.web.posting;
 
 import SpringCommunityService.CommunityService.domain.UploadFile;
+import SpringCommunityService.CommunityService.domain.image.Image;
+import SpringCommunityService.CommunityService.domain.image.ImageService;
 import SpringCommunityService.CommunityService.domain.posting.Posting;
 import SpringCommunityService.CommunityService.domain.posting.PostingRepository;
+import SpringCommunityService.CommunityService.domain.posting.PostingService;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.file.FileStore;
 import SpringCommunityService.CommunityService.web.argumentresolver.Login;
@@ -35,10 +38,13 @@ public class PostingController {
     private final PostingRepository postingRepository;
     private final FileStore fileStore;
 
-    @GetMapping("/posting")
+    private final PostingService postingService;
+    private final ImageService imageService;
+
+//    @GetMapping("/posting")
     public String userPosting(@Login User loginUser, Model model,
                               @ModelAttribute("postingForm") PostingForm postingForm){
-        //db에서 값 읽어와서 모델에 넣고 contents  렌더링 => contents/contents도 수정
+
         log.info("id : {}, loginId : {} 게시판 접속",loginUser.getId(),loginUser.getLoginId());
         log.info("{} posting :  {}",loginUser.getLoginId(),postingRepository.findById(1L));
 
@@ -62,7 +68,7 @@ public class PostingController {
         return "posting/postingForm";
     }
 
-    @PostMapping("/posting/add")
+ /*   @PostMapping("/posting/add")
     public String addContent(@Valid @ModelAttribute PostingForm postingForm,
                                        @Login User loginUser) throws IOException {
         List<UploadFile> storeImageFiles = fileStore.storeFiles(postingForm.getImageFiles());
@@ -73,13 +79,16 @@ public class PostingController {
         return "redirect:/posting";
     }
 
+  */
+
     @ResponseBody
     @GetMapping("/images/{filename}")
     public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
+        log.info("url : {}, {}",filename,"file:" + fileStore.getFullPath(filename));
         return new UrlResource("file:" + fileStore.getFullPath(filename));
     }
 
-    @GetMapping("/posting/edit/{postingId}")
+//    @GetMapping("/posting/edit/{postingId}")
     public String editPosting(@PathVariable("postingId") String postingId, Model model,
                               @ModelAttribute("postingForm") PostingForm postingForm){
         log.info("editPosting : {}",postingId);
@@ -89,7 +98,7 @@ public class PostingController {
         return "posting/edit";
     }
 
-    @PostMapping("/posting/edit/{postingId}")
+ /*   @PostMapping("/posting/edit/{postingId}")
     public String edit(@Valid @ModelAttribute("postingForm") PostingForm postingForm,
                        @Login User loginUser, @PathVariable("postingId") String postingId) throws IOException {
         log.info("edit : {}",postingId);
@@ -104,6 +113,8 @@ public class PostingController {
         return "redirect:/posting";
     }
 
+  */
+
     @GetMapping("/posting/search/postingId")
     public String searchPostingId(@Login User user, Model model,
                                   @ModelAttribute("postingForm") PostingForm postingForm){
@@ -111,7 +122,7 @@ public class PostingController {
         return "posting/searchById";
     }
 
-    @PostMapping("/posting/search/postingId")
+//    @PostMapping("/posting/search/postingId")
     public String searchByPostingId(@Login User loginUser, Model model,
                                     @ModelAttribute("postingForm") PostingForm postingForm){
         String searchContent = postingForm.getContent();
@@ -149,5 +160,63 @@ public class PostingController {
         model.addAttribute("user",loginUser);
         model.addAttribute("posting",allSearchPosts);
         return "posting/posting";
+    }
+
+
+    //JPA
+    @GetMapping("/posting")
+    public String userPostingJpa(@Login User loginUser, Model model,
+                              @ModelAttribute("postingForm") PostingForm postingForm){
+
+        log.info("id : {}, loginId : {} 게시판 접속",loginUser.getId(),loginUser.getLoginId());
+        log.info("{} posting :  {}",loginUser.getLoginId(),postingRepository.findById(1L));
+
+        List<Posting> allPosts = postingService.findAll();
+        allPosts.forEach(posting -> posting.setImages(imageService.findByPosting(posting)));
+        Collections.sort(allPosts, (o1,o2) -> o2.getTime().compareTo(o1.getTime()));
+
+        model.addAttribute("user",loginUser);
+        model.addAttribute("posting",allPosts);
+        return "posting/posting";
+    }
+
+    @PostMapping("/posting/search/postingId")
+    public String searchByPostingIdJpa(@Login User loginUser, Model model,
+                                    @ModelAttribute("postingForm") PostingForm postingForm){
+        String searchContent = postingForm.getContent();
+        log.info("포스팅 작성자 아이디 검색 : {}",searchContent);
+
+        List<Posting> allSearchPosts = postingRepository.findAll().stream()
+                .filter(posting -> posting.getLoginId().contains(searchContent))
+                .collect(Collectors.toList());
+
+        Collections.sort(allSearchPosts, (o1, o2) -> o2.getTime().compareTo(o1.getTime()));
+
+        model.addAttribute("user",loginUser);
+        model.addAttribute("posting",allSearchPosts);
+        return "posting/posting";
+    }
+
+    @GetMapping("/posting/edit/{postingId}")
+    public String editPostingJpa(@PathVariable("postingId") String postingId, Model model,
+                              @ModelAttribute("postingForm") PostingForm postingForm){
+        log.info("editPosting : {}",postingId);
+        Posting posting = postingRepository.findById(Long.parseLong(postingId));
+        model.addAttribute("posting",posting);
+        log.info("editPosting End");
+        return "posting/edit";
+    }
+
+    @PostMapping("/posting/add")
+    public String addContentJpa(@Valid @ModelAttribute PostingForm postingForm,
+                             @Login User loginUser) throws IOException {
+        Posting posting = new Posting(loginUser,loginUser.getLoginId(),postingForm.getContent(),LocalTime.now());
+        List<Image> storeImages = fileStore.storeFiles(posting,postingForm.getImageFiles());
+        posting.setImages(storeImages);
+        postingService.joinJpa(posting);
+        storeImages.forEach((image) -> imageService.joinJpa(image));
+        log.info("newContent Mapping");
+        log.info("{}",postingForm.getContent());
+        return "redirect:/posting";
     }
 }

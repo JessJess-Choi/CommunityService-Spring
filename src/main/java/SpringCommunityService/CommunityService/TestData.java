@@ -1,19 +1,14 @@
 package SpringCommunityService.CommunityService;
 
 import SpringCommunityService.CommunityService.domain.follow.Follow;
-import SpringCommunityService.CommunityService.domain.follow.FollowRepository;
 import SpringCommunityService.CommunityService.domain.follow.FollowService;
 import SpringCommunityService.CommunityService.domain.message.Message;
-import SpringCommunityService.CommunityService.domain.message.MessageRepository;
 import SpringCommunityService.CommunityService.domain.message.MessageService;
-import SpringCommunityService.CommunityService.domain.message.Room;
 import SpringCommunityService.CommunityService.domain.posting.Posting;
-import SpringCommunityService.CommunityService.domain.posting.PostingRepository;
+import SpringCommunityService.CommunityService.domain.posting.PostingService;
 import SpringCommunityService.CommunityService.domain.user.User;
-import SpringCommunityService.CommunityService.domain.user.UserRepository;
 import SpringCommunityService.CommunityService.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -31,6 +26,7 @@ public class TestData {
     private final UserService userService;
     private final FollowService followService;
     private final MessageService messageService;
+    private final PostingService postingService;
 
     @PostConstruct
     public void initForJpa(){
@@ -44,8 +40,9 @@ public class TestData {
         Message message2 = new Message(user2,"a","testMessage2",LocalTime.now().minusSeconds(5L));
         Message message3 = new Message(user1,"b","testMessage3",LocalTime.now().minusSeconds(10L));
         Message message4 = new Message(user3,"b","testMessage3",LocalTime.now());
-        Room room1 = new Room(user1,user2);
-        Room room2 = new Room(user2,user3);
+//        Posting posting1 = new Posting("1","test", LocalTime.now());
+  //      Posting posting2 = new Posting("1","test posting22", LocalTime.now().minusHours(10));
+    //    Posting posting3 = new Posting("2","test posting33", LocalTime.now().minusHours(30));
 
         userService.joinJpa(user1);
         userService.joinJpa(user2);
@@ -57,6 +54,9 @@ public class TestData {
         messageService.joinJpa(message2);
         messageService.joinJpa(message3);
         messageService.joinJpa(message4);
+ //       postingService.joinJpa(posting1);
+   //     postingService.joinJpa(posting2);
+     //   postingService.joinJpa(posting3);
     }
 /*
     @PostConstruct

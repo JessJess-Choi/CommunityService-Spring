@@ -114,9 +114,10 @@ public class MessageController {
 
     @PostMapping("/directmessage/{receiverId}")
     public String sendMessageToReceiverJpa(@PathVariable("receiverId") String receiverId,
-                                        @Login User loginUser, Model model,
+                                        @Login User loginUser,
                                         @ModelAttribute("messageForm") MessageForm messageForm){
-        messageService.joinJpa(new Message(loginUser,messageService.findOne(receiverId).getLoginId(),messageForm.getMessage(),LocalTime.now()));
+        Message message = new Message(loginUser,messageService.findOne(receiverId).getLoginId(),messageForm.getMessage(),LocalTime.now());
+        messageService.joinJpa(message);
         return "redirect:/directmessage/" + receiverId;
     }
 

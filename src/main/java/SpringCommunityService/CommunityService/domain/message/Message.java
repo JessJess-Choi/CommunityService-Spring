@@ -23,7 +23,6 @@ public class Message {
     @JoinColumn(name = "user")
     private User user;
 
-//    private String senderId;
     private String receiverId;
     private String message;
     private LocalTime localTime;

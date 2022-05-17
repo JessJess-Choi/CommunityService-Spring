@@ -1,6 +1,7 @@
-package SpringCommunityService.CommunityService.domain.posting;
+package SpringCommunityService.CommunityService.domain.image;
 
 import SpringCommunityService.CommunityService.domain.UploadFile;
+import SpringCommunityService.CommunityService.domain.posting.Posting;
 import SpringCommunityService.CommunityService.domain.user.User;
 import lombok.Data;
 
@@ -26,8 +27,10 @@ public class Image {
     public Image(){
     }
 
-    public Image(String uploadFileName, String storeFileName){
+    public Image(Posting posting, String uploadFileName, String storeFileName){
+        this.posting = posting;
         this.uploadFileName = uploadFileName;
         this.storeFileName = storeFileName;
     }
+
 }

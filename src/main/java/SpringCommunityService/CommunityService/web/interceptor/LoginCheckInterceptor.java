@@ -20,7 +20,6 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         log.info("loginId : {}",request);
 
         if(session == null || session.getAttribute(SessionConst.LOGIN_USER) == null){
-
             log.info("미인증 사용자 요청 : {}",reqURI);
             log.info("{}, {}",session,session.getAttribute(SessionConst.LOGIN_USER));
             log.info("url : {}",reqURI);
