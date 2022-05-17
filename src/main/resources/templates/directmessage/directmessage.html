@@ -25,8 +25,8 @@
 <br>
 <h4 class="mb-3" th:each="f : ${follow}" >
   <span>유저 : </span>
-  <span th:text="${f}"></span>
-  <a th:href="@{/directmessage/{id} (id=${f})}" style="background-color: blue;color: black" role="button">DM 보내기</a>
+  <span th:text="${f.name}"></span>
+  <a th:href="@{/directmessage/{id} (id=${f.id})}" style="background-color: blue;color: black" role="button">DM 보내기</a>
 </h4>
 </body>
 </html>

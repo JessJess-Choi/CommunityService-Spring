@@ -5,6 +5,8 @@ import SpringCommunityService.CommunityService.domain.follow.FollowRepository;
 import SpringCommunityService.CommunityService.domain.follow.FollowService;
 import SpringCommunityService.CommunityService.domain.message.Message;
 import SpringCommunityService.CommunityService.domain.message.MessageRepository;
+import SpringCommunityService.CommunityService.domain.message.MessageService;
+import SpringCommunityService.CommunityService.domain.message.Room;
 import SpringCommunityService.CommunityService.domain.posting.Posting;
 import SpringCommunityService.CommunityService.domain.posting.PostingRepository;
 import SpringCommunityService.CommunityService.domain.user.User;
@@ -28,6 +30,7 @@ public class TestData {
 
     private final UserService userService;
     private final FollowService followService;
+    private final MessageService messageService;
 
     @PostConstruct
     public void initForJpa(){
@@ -37,6 +40,12 @@ public class TestData {
         Follow follow1 = new Follow(user1.getLoginId(),user2.getLoginId(),user1);
         Follow follow2 = new Follow(user1.getLoginId(),user3.getLoginId(),user1);
         Follow follow3 = new Follow(user2.getLoginId(),user1.getLoginId(),user2);
+        Message message1 = new Message(user1,"b","testMessage",LocalTime.now().minusSeconds(3L));
+        Message message2 = new Message(user2,"a","testMessage2",LocalTime.now().minusSeconds(5L));
+        Message message3 = new Message(user1,"b","testMessage3",LocalTime.now().minusSeconds(10L));
+        Message message4 = new Message(user3,"b","testMessage3",LocalTime.now());
+        Room room1 = new Room(user1,user2);
+        Room room2 = new Room(user2,user3);
 
         userService.joinJpa(user1);
         userService.joinJpa(user2);
@@ -44,6 +53,10 @@ public class TestData {
         followService.joinJpa(follow1);
         followService.joinJpa(follow2);
         followService.joinJpa(follow3);
+        messageService.joinJpa(message1);
+        messageService.joinJpa(message2);
+        messageService.joinJpa(message3);
+        messageService.joinJpa(message4);
     }
 /*
     @PostConstruct

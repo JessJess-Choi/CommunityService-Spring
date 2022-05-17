@@ -18,12 +18,12 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new LogInterceptor())
                 .order(1)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/","/users/add","/login","/logout","/error");
+                .excludePathPatterns("/","/*.ico","/users/add","/login","/logout","/error");
 
         registry.addInterceptor(new LoginCheckInterceptor())
                 .order(2)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/","/users/add","/login","/logout","/error");
+                .excludePathPatterns("/","/*.ico","/users/add","/login","/logout","/error");
     }
 
     @Override

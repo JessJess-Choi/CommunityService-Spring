@@ -23,7 +23,7 @@ public class Message {
     @JoinColumn(name = "user")
     private User user;
 
-    private String senderId;
+//    private String senderId;
     private String receiverId;
     private String message;
     private LocalTime localTime;
@@ -31,8 +31,8 @@ public class Message {
     public Message(){
     }
 
-    public Message(String senderId,String receiverId,String message,LocalTime localTime){
-        this.senderId = senderId;
+    public Message(User user,String receiverId,String message,LocalTime localTime){
+        this.user = user;
         this.receiverId = receiverId;
         this.message = message;
         this.localTime = localTime;

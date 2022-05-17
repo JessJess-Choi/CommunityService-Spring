@@ -21,11 +21,11 @@
     </form>
 </div>
 <br>
-<h4 th:text="|${receiver} 님과의 메세지|">로그인 사용자 이름</h4>
+<h4 th:text="|${receiver.getName()} 님과의 메세지|">로그인 사용자 이름</h4>
 <br>
 <h4 th:each="message : ${messageList}">
-    <p th:if="${message.getSenderId().equals(user.getLoginId())}" th:text="${message.getMessage()}" style="text-align: right;color:purple">1</p>
-    <p th:if="${message.getSenderId().equals(receiver)}" th:text="${message.getMessage()}" style="text-align: left;color: chocolate">2</p>
+    <p th:if="${message.getUser().getLoginId().equals(user.getLoginId())}" th:text="${message.getMessage()}" style="text-align: right;color:purple">1</p>
+    <p th:if="${message.getUser().getLoginId().equals(receiver.getLoginId())}" th:text="${message.getMessage()}" style="text-align: left;color: chocolate">2</p>
 </h4>
 
 
