@@ -11,7 +11,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class ImageService {
 
-    private ImageRepository imageRepository;
+    private final ImageRepository imageRepository;
 
     @Autowired
     public ImageService(ImageRepository imageRepository){
@@ -27,4 +27,15 @@ public class ImageService {
     public List<Image> findByPosting(Posting posting){
         return imageRepository.findImageListByPosting(posting);
     }
+
+    @Transactional
+    public List<Image> setJpa(Posting posting, List<Image> images){
+        return imageRepository.setJpa(posting,images);
+    }
+
+    @Transactional
+    public List<Image> removeJpa(Posting posting){
+        return imageRepository.removeJpa(posting);
+    }
+
 }

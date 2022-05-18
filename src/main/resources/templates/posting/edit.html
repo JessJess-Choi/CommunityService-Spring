@@ -15,7 +15,7 @@
 <br>
 <h3>원래 내용</h3>
 <span th:text="${posting.getContent()}"></span>
-<img th:each="imageFile : ${posting.imageFiles}" th:src="|/images/${imageFile.getStoreFileName()}|" width="300" height="300"/>
+<img th:each="imageFile : ${posting.images}" th:src="|/images/${imageFile.getStoreFileName()}|" width="300" height="300"/>
 <br>
 <br>
 
@@ -25,17 +25,10 @@
     <h2>포스팅</h2>
   </div>
 
-<<<<<<< HEAD
   <form th:action th:object="${postingForm}" method="post" enctype="multipart/form-data">
 
     <div th:if="${#fields.hasGlobalErrors()}">
       <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
-=======
-  <div class="row">
-    <div class="col">
-      <button class="w-100 btn btn-primary btn-lg" type="submit"
-              th:onclick="|location.href='@{/posting/edit/{postingId} (postingId=${posting.getId()})}'|">포스팅 수정 하기</button>
->>>>>>> e3f7052831673233cbfe09f109b56f242fc5ca7a
     </div>
 
     <div>

@@ -23,4 +23,21 @@ public class ImageRepository {
                 .setParameter("posting",posting)
                 .getResultList();
     }
+
+    public List<Image> setJpa(Posting posting, List<Image> images){
+        List<Image> updateImages = em.createQuery("select i from Image i where i.posting = :posting",Image.class)
+                                        .setParameter("posting",posting).getResultList();
+        updateImages.removeAll(updateImages);
+        updateImages.addAll(images);
+        em.merge(updateImages);
+        return updateImages;
+    }
+
+    public List<Image> removeJpa(Posting posting){
+        List<Image> removeImages = em.createQuery("select i from Image i where i.posting = :posting",Image.class)
+                                    .setParameter("posting",posting).getResultList();
+        removeImages.forEach((removeImage) -> em.remove(removeImage));
+        return removeImages;
+    }
+
 }

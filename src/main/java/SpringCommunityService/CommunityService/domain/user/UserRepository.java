@@ -57,6 +57,12 @@ public class UserRepository {
                 .getResultList();
     }
 
+    public List<User> findOneByNameJpa(String userName){
+        return em.createQuery("select u from User u where u.name like concat('%',:name,'%')",User.class)
+                .setParameter("name",userName)
+                .getResultList();
+    }
+
     public List<User> findByLoginIdJpa(String loginId){
         return em.createQuery("select u from User u where u.loginId = :loginId",User.class)
                 .setParameter("loginId",loginId)

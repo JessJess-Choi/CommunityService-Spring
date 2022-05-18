@@ -14,6 +14,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -40,7 +41,7 @@ public class PostingController {
                               @ModelAttribute("postingForm") PostingForm postingForm){
 
         log.info("id : {}, loginId : {} 게시판 접속",loginUser.getId(),loginUser.getLoginId());
-        log.info("{} posting :  {}",loginUser.getLoginId(),postingRepository.findById(1L));
+ //       log.info("{} posting :  {}",loginUser.getLoginId(),postingRepository.findById(1L));
 
         List<Posting> allPosts = postingRepository.findAll();
         Collections.sort(allPosts, (o1,o2) -> o2.getTime().compareTo(o1.getTime()));
@@ -159,11 +160,10 @@ public class PostingController {
 
     //JPA
     @GetMapping("/posting")
-    public String userPostingJpa(@Login User loginUser, Model model,
-                              @ModelAttribute("postingForm") PostingForm postingForm){
+    public String userPostingJpa(@Login User loginUser, Model model){
 
         log.info("id : {}, loginId : {} 게시판 접속",loginUser.getId(),loginUser.getLoginId());
-        log.info("{} posting :  {}",loginUser.getLoginId(),postingRepository.findById(1L));
+//        log.info("{} posting :  {}",loginUser.getLoginId(),postingRepository.findById(1L));
 
         List<Posting> allPosts = postingService.findAll();
         allPosts.forEach(posting -> posting.setImages(imageService.findByPosting(posting)));
@@ -176,7 +176,14 @@ public class PostingController {
 
     @PostMapping("/posting/add")
     public String addContentJpa(@Valid @ModelAttribute PostingForm postingForm,
-                             @Login User loginUser) throws IOException {
+                                BindingResult bindingResult,
+                                @Login User loginUser) throws IOException {
+
+        if(postingForm.getContent().isEmpty()){
+            bindingResult.reject("postingFail","포스팅 내용 입력하세요");
+            return "posting/postingForm";
+        }
+
         Posting posting = new Posting(loginUser,loginUser.getName(),postingForm.getContent(),LocalTime.now());
         List<Image> storeImages = fileStore.storeFiles(posting,postingForm.getImageFiles());
         posting.setImages(storeImages);
@@ -188,22 +195,15 @@ public class PostingController {
     }
 
     @PostMapping("/posting/search/postingId")
-    public String searchByPostingIdJpa(@Login User loginUser, Model model,
+    public String searchPostingByNameJpa(@Login User loginUser, Model model,
                                        @ModelAttribute("postingForm") PostingForm postingForm){
+
         String searchContent = postingForm.getContent();
-        log.info("포스팅 작성자 아이디 검색 : {}",searchContent);
-        List<Posting> allSearchPosts = postingService.findByUser(loginUser);
+        log.info("포스팅 작성자 검색 : {}",searchContent);
+        List<Posting> allSearchPosts = postingService.findByUser(postingForm.getContent());
         allSearchPosts.forEach(posting -> posting.setImages(imageService.findByPosting(posting)));
         Collections.sort(allSearchPosts, (o1, o2) -> o2.getTime().compareTo(o1.getTime()));
 
- /*       List<Posting> allSearchPosts = postingRepository.findAll().stream()
-                .filter(posting -> posting.getLoginId().contains(searchContent))
-                .collect(Collectors.toList());
-
-        Collections.sort(allSearchPosts, (o1, o2) -> o2.getTime().compareTo(o1.getTime()));
-
-
-  */
         model.addAttribute("user",loginUser);
         model.addAttribute("posting",allSearchPosts);
         return "posting/posting";
@@ -213,9 +213,54 @@ public class PostingController {
     public String editPostingJpa(@PathVariable("postingId") String postingId, Model model,
                                  @ModelAttribute("postingForm") PostingForm postingForm){
         log.info("editPosting : {}",postingId);
-        Posting posting = postingRepository.findById(Long.parseLong(postingId));
+        Posting posting = postingService.findByIdJpa(Long.parseLong(postingId));
+//        Posting posting = postingRepository.findById(Long.parseLong(postingId));
         model.addAttribute("posting",posting);
         log.info("editPosting End");
         return "posting/edit";
+    }
+
+    @PostMapping("/posting/edit/{postingId}")
+    public String editJpa(@Valid @ModelAttribute("postingForm") PostingForm postingForm,
+                          BindingResult bindingResult,
+                       @Login User loginUser, @PathVariable("postingId") String postingId) throws IOException {
+
+        if(postingForm.getContent().isEmpty()){
+            bindingResult.reject("postingFail","포스팅 내용 입력하세요");
+            return "posting/postingForm";
+        }
+
+        log.info("edit : {}",postingId);
+        log.info("{}",postingId);
+        log.info("postingForm content : {}",postingForm.getContent());
+
+
+        Posting posting = new Posting(loginUser,loginUser.getName(),postingForm.getContent(), LocalTime.now());
+        List<Image> storeImageFiles = fileStore.storeFiles(posting,postingForm.getImageFiles());
+        posting.setImages(storeImageFiles);
+
+        log.info("log for update : {}",posting.getContent());
+   //     imageService.setJpa(postingService.findByIdJpa(Long.parseLong(postingId)),storeImageFiles);
+        List<Image> removeImages = imageService.removeJpa(postingService.findByIdJpa(Long.parseLong(postingId)));
+        removeImages.forEach((remove) -> {
+            log.info("remove image : {},{}",remove.getId(),remove.getPosting());
+        });
+        postingService.setJpa(Long.parseLong(postingId),posting);
+
+        if(storeImageFiles == null){
+            log.info("storeImageFiles null");
+        }else {
+            storeImageFiles.forEach((image) -> {
+                log.info("image : {},{}", image.getPosting(), image.getId());
+                imageService.joinJpa(image);
+            });
+        }
+        if(posting.getId() != null) {
+            postingService.removeJpa(postingService.findByIdJpa(Long.parseLong(postingId)));
+        }
+ //       postingRepository.set(Long.parseLong(postingId),posting);
+        log.info("{}",posting.getContent());
+        log.info("edit End");
+        return "redirect:/posting";
     }
 }
