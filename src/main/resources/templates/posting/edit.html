@@ -52,7 +52,10 @@
     </div>
 
   </form>
-
+  <div class="col">
+    <button class="w-100 btn btn-danger btn-lg"
+            th:onclick="|location.href='@{/posting/edit/remove/{postingId} (postingId=${posting.getId()})}'|">게시글 삭제</button>
+  </div>
 </div>
 
 

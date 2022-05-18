@@ -1,13 +1,9 @@
 package SpringCommunityService.CommunityService.domain.image;
 
-import SpringCommunityService.CommunityService.domain.UploadFile;
 import SpringCommunityService.CommunityService.domain.posting.Posting;
-import SpringCommunityService.CommunityService.domain.user.User;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.time.LocalTime;
-import java.util.List;
 
 @Data
 @Entity

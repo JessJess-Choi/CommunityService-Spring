@@ -45,6 +45,10 @@ public class PostingService {
         return find;
     }
 
+    public List<Posting> findByContent(String content){
+        return postingRepository.findByContent(content);
+    }
+
     public Posting findByIdJpa(Long postingId){
         return postingRepository.findByIdJpa(postingId);
     }

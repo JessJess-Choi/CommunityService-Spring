@@ -28,7 +28,7 @@
     </div>
 
     <div>
-        <label for="loginId">id로 검색</label>
+        <label for="loginId">이름으로 검색</label>
         <input type="text" id="loginId" th:field="*{content}" class="form-control"
                th:errorclass="field-error">
         <div class="field-error" th:errors="*{content}" />
@@ -37,7 +37,7 @@
     <div class="row">
         <div class="col">
             <button class="w-100 btn btn-primary btn-lg" type="submit"
-                    th:onclick="|location.href='@{/posting/search/postingId}'|">아이디로 검색하기</button>
+                    th:onclick="|location.href='@{/posting/search/postingId}'|">이름으로 검색하기</button>
         </div>
         <div class="col">
             <button class="w-100 btn btn-secondary btn-lg"

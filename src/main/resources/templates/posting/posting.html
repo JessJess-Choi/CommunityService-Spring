@@ -33,7 +33,7 @@
 
 <h4 class="mb-3" th:text="|${user.name} 님 안녕하세요|">로그인 사용자 이름</h4>
 <br>
-
+<h5 th:if="${editCheck}" style="color: red">자신이 작성한 글 만 수정 가능</h5>
 <br>
 <h4 class="mb-3" th:each="post : ${posting}">
   <span th:text="|작성자 : ${post.userName}|"></span>

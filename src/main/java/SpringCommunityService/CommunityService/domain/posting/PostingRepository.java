@@ -66,6 +66,11 @@ public class PostingRepository {
                 .getSingleResult();
     }
 
+    public List<Posting> findByContent(String content){
+        return em.createQuery("select p from Posting p where p.content like concat('%',:content,'%')",Posting.class)
+                .setParameter("content",content).getResultList();
+    }
+
     public List<Posting> findAllJpa(){
         return em.createQuery("select p from Posting p",Posting.class)
                 .getResultList();
