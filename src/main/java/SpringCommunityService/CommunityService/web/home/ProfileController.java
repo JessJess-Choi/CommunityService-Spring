@@ -17,9 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 @RequiredArgsConstructor
 public class ProfileController {
 
-    private final FollowRepository followRepository;
-    private final UserRepository userRepository;
-
     @GetMapping("/profile")
     public String userProfile(@Login User loginUser, Model model){
         log.info("id : {}, loginId : {} 프로필 접속",loginUser.getId(),loginUser.getLoginId());

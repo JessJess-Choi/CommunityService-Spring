@@ -1,6 +1,5 @@
 package SpringCommunityService.CommunityService.domain.posting;
 
-import SpringCommunityService.CommunityService.domain.image.Image;
 import SpringCommunityService.CommunityService.domain.image.ImageService;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.domain.user.UserService;
@@ -17,13 +16,11 @@ public class PostingService {
 
     private final PostingRepository postingRepository;
     private final UserService userService;
-    private final ImageService imageService;
 
     @Autowired
-    public PostingService(PostingRepository postingRepository, UserService userService, ImageService imageService){
+    public PostingService(PostingRepository postingRepository, UserService userService){
         this.postingRepository = postingRepository;
         this.userService = userService;
-        this.imageService = imageService;
     }
 
     @Transactional
@@ -55,9 +52,6 @@ public class PostingService {
 
     @Transactional
     public Posting setJpa(Long id,Posting posting){
- //       imageService.removeByPosting(posting);
-//        postingRepository.removeJpa(postingRepository.findByIdJpa(id));
-  //      postingRepository.saveJpa(posting);
         postingRepository.setJpa(id,posting);
         return posting;
     }

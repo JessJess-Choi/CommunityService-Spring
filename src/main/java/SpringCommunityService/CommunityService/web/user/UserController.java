@@ -1,7 +1,6 @@
 package SpringCommunityService.CommunityService.web.user;
 
 import SpringCommunityService.CommunityService.domain.user.User;
-import SpringCommunityService.CommunityService.domain.user.UserRepository;
 import SpringCommunityService.CommunityService.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +19,6 @@ import javax.validation.Valid;
 @Slf4j
 public class UserController {
 
-//    private final UserRepository userRepository;
     private final UserService userService;
 
     @GetMapping("/add")
@@ -33,12 +31,7 @@ public class UserController {
         if(bindingResult.hasErrors()){
             return "users/addUserForm";
         }
- /*       if(userRepository.findByLoginId(user.getLoginId()).isPresent()){
-            return "users/addUserForm";
-        }
-        userRepository.save(user);
 
-  */
         try {
             userService.joinJpa(user);
         }catch(IllegalStateException e){

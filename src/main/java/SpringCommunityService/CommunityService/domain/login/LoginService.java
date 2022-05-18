@@ -28,13 +28,6 @@ public class LoginService {
         this.userRepository = userRepository;
     }
 
-    public User login(String userId, String password){
-        log.info("요청 userID : {} password : {}",userId,password);
-        return userRepository.findByLoginId(userId)
-                .filter(user -> user.getPassword().equals(password))
-                .orElse(null);
-    }
-
     public User loginJpa(String userId, String password){
         return em.createQuery("select u from User u where u.loginId = :userId and u.password = :password",User.class)
                 .setParameter("userId",userId)

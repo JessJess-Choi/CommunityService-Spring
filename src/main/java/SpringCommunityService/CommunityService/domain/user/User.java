@@ -1,14 +1,8 @@
 package SpringCommunityService.CommunityService.domain.user;
 
-import SpringCommunityService.CommunityService.domain.follow.Follow;
-import SpringCommunityService.CommunityService.domain.message.Message;
-import SpringCommunityService.CommunityService.domain.posting.Posting;
 import lombok.*;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import java.util.ArrayList;
-import java.util.List;
 
 @Getter @Setter
 @Entity

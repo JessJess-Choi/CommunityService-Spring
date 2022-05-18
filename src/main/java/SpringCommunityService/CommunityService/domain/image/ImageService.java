@@ -29,11 +29,6 @@ public class ImageService {
     }
 
     @Transactional
-    public List<Image> setJpa(Posting posting, List<Image> images){
-        return imageRepository.setJpa(posting,images);
-    }
-
-    @Transactional
     public List<Image> removeJpa(Posting posting){
         return imageRepository.removeJpa(posting);
     }

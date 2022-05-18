@@ -42,10 +42,6 @@ public class UserService {
         return userRepository.findOneJpa(id);
     }
 
-    public List<User> findByLoginId(String loginId){
-        return userRepository.findByLoginIdJpa(loginId);
-    }
-
     public List<User> findUserByUserName(String name){
         return userRepository.findOneByNameJpa(name);
     }
