@@ -23,7 +23,6 @@ public class Posting {
     @JoinColumn(name = "user")
     private User user;
 
-    private String userName;
     private String content;
     @Transient
     private List<Image> images;
@@ -32,9 +31,8 @@ public class Posting {
     public Posting(){
     }
 
-    public Posting(User user,String userName,String content,LocalTime time){
+    public Posting(User user,String content,LocalTime time){
         this.user = user;
-        this.userName = userName;
         this.content = content;
         this.time = time;
     }

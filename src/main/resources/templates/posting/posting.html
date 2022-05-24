@@ -36,7 +36,7 @@
 <h5 th:if="${editCheck}" style="color: red">자신이 작성한 글 만 수정 가능</h5>
 <br>
 <h4 class="mb-3" th:each="post : ${posting}">
-  <span th:text="|작성자 : ${post.userName}|"></span>
+  <span th:text="|작성자 : ${post.user.name}|"></span>
   <span th:text="${post.content}"></span>
   <span th:text="|${post.time.hour}:${post.time.minute}|"></span>
   <img th:each="image : ${post.images}" th:src="|/images/${image.getStoreFileName()}|" width="300" height="300"/>

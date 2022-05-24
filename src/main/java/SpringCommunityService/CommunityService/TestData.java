@@ -28,13 +28,13 @@ public class TestData {
         User user1 = new User("a","a","1@a.com","testName1");
         User user2 = new User("b","b","2@a.com","testName2");
         User user3 = new User("c","c","3@a.com","testName3");
-        Follow follow1 = new Follow(user1.getLoginId(),user2.getLoginId(),user1);
-        Follow follow2 = new Follow(user1.getLoginId(),user3.getLoginId(),user1);
-        Follow follow3 = new Follow(user2.getLoginId(),user1.getLoginId(),user2);
-        Message message1 = new Message(user1,"b","testMessage",LocalTime.now().minusSeconds(3L));
-        Message message2 = new Message(user2,"a","testMessage2",LocalTime.now().minusSeconds(5L));
-        Message message3 = new Message(user1,"b","testMessage3",LocalTime.now().minusSeconds(10L));
-        Message message4 = new Message(user3,"b","testMessage3",LocalTime.now());
+        Follow follow1 = new Follow(user1,user2);
+        Follow follow2 = new Follow(user1,user3);
+        Follow follow3 = new Follow(user2,user1);
+        Message message1 = new Message(user1,user2,"testMessage",LocalTime.now().minusSeconds(3L));
+        Message message2 = new Message(user2,user1,"testMessage2",LocalTime.now().minusSeconds(5L));
+        Message message3 = new Message(user1,user2,"testMessage3",LocalTime.now().minusSeconds(10L));
+        Message message4 = new Message(user3,user2,"testMessage3",LocalTime.now());
 
         userService.joinJpa(user1);
         userService.joinJpa(user2);

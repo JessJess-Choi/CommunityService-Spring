@@ -20,7 +20,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.LocalTime;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -71,7 +70,10 @@ public class PostingController {
 
         log.info("id : {}, loginId : {} 게시판 접속",loginUser.getId(),loginUser.getLoginId());
         List<Posting> allPosts = postingService.findAll();
-        return addImageToContent(loginUser, model, allPosts);
+
+        model.addAttribute("user",loginUser);
+        model.addAttribute("posting",allPosts);
+        return "posting/posting";
     }
 
     @PostMapping("/posting/add")
@@ -84,7 +86,7 @@ public class PostingController {
             return "posting/postingForm";
         }
 
-        Posting posting = new Posting(loginUser,loginUser.getName(),postingForm.getContent(),LocalTime.now());
+        Posting posting = new Posting(loginUser,postingForm.getContent(),LocalTime.now());
         List<Image> storeImages = fileStore.storeFiles(posting,postingForm.getImageFiles());
         posting.setImages(storeImages);
         postingService.joinJpa(posting);
@@ -106,13 +108,10 @@ public class PostingController {
         if(!posting.getUser().getLoginId().equals(loginUser.getLoginId())){
             log.info("post user : {},{}",posting.getUser().getLoginId(),posting.getUser());
             log.info("user : {},{}",loginUser.getLoginId(),loginUser);
-            List<Posting> allPosts = postingService.findAll();
-            allPosts.forEach(p -> p.setImages(imageService.findByPosting(p)));
-            Collections.sort(allPosts, (o1,o2) -> o2.getTime().compareTo(o1.getTime()));
             bindingResult.reject("editFail","자신이 작성한 글만 수정 가능합니다.");
             model.addAttribute("editCheck",true);
             model.addAttribute("user",loginUser);
-            model.addAttribute("posting",allPosts);
+            model.addAttribute("posting",postingService.findAll());
             return "posting/posting";
         }
 
@@ -135,7 +134,7 @@ public class PostingController {
         log.info("{}",postingId);
         log.info("postingForm content : {}",postingForm.getContent());
 
-        Posting posting = new Posting(loginUser,loginUser.getName(),postingForm.getContent(), LocalTime.now());
+        Posting posting = new Posting(loginUser,postingForm.getContent(), LocalTime.now());
         List<Image> storeImageFiles = fileStore.storeFiles(posting,postingForm.getImageFiles());
         posting.setImages(storeImageFiles);
 
@@ -177,7 +176,10 @@ public class PostingController {
         String searchContent = postingForm.getContent();
         log.info("포스팅 작성자 검색 : {}",searchContent);
         List<Posting> allSearchPosts = postingService.findByUser(postingForm.getContent());
-        return addImageToContent(loginUser, model, allSearchPosts);
+
+        model.addAttribute("user",loginUser);
+        model.addAttribute("posting",allSearchPosts);
+        return "posting/posting";
     }
 
     @PostMapping("/posting/search/content")
@@ -187,12 +189,6 @@ public class PostingController {
         log.info("포스팅 내용 검색 : {}",searchContent);
 
         List<Posting> allSearchPosts = postingService.findByContent(postingForm.getContent());
-        return addImageToContent(loginUser, model, allSearchPosts);
-    }
-
-    private String addImageToContent(@Login User loginUser, Model model, List<Posting> allSearchPosts) {
-        allSearchPosts.forEach(posting -> posting.setImages(imageService.findByPosting(posting)));
-        Collections.sort(allSearchPosts, (o1, o2) -> o2.getTime().compareTo(o1.getTime()));
 
         model.addAttribute("user",loginUser);
         model.addAttribute("posting",allSearchPosts);

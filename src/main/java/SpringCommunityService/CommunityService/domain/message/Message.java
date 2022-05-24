@@ -20,19 +20,21 @@ public class Message {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user")
+    @JoinColumn
     private User user;
 
-    private String receiverId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn
+    private User receiver;
     private String message;
     private LocalTime localTime;
 
     public Message(){
     }
 
-    public Message(User user,String receiverId,String message,LocalTime localTime){
+    public Message(User user,User receiver,String message,LocalTime localTime){
         this.user = user;
-        this.receiverId = receiverId;
+        this.receiver = receiver;
         this.message = message;
         this.localTime = localTime;
     }

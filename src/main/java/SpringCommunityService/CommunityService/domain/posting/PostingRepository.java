@@ -1,5 +1,6 @@
 package SpringCommunityService.CommunityService.domain.posting;
 
+import SpringCommunityService.CommunityService.domain.image.Image;
 import SpringCommunityService.CommunityService.domain.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -32,13 +33,28 @@ public class PostingRepository {
     }
 
     public List<Posting> findByContent(String content){
-        return em.createQuery("select p from Posting p where p.content like concat('%',:content,'%')",Posting.class)
+        List<Posting> ret = em.createQuery("select p from Posting p where p.content like concat('%',:content,'%') order by p.time desc",Posting.class)
                 .setParameter("content",content).getResultList();
+        ret.forEach(posting -> posting.setImages(em.createQuery("select i from Image i where i.posting = :posting",Image.class)
+                    .setParameter("posting",posting).getResultList()));
+        return ret;
+    }
+
+    public List<Posting> findPostingByUser(String userName){
+        List<Posting> ret =  em.createQuery("select p from Posting p where p.user in (select u from User u where u.name like concat('%',:userName,'%') ) order by p.time desc",Posting.class)
+                .setParameter("userName",userName)
+                .getResultList();
+        ret.forEach(posting -> posting.setImages(em.createQuery("select i from Image i where i.posting = :posting",Image.class)
+                    .setParameter("posting",posting).getResultList()));
+        return ret;
     }
 
     public List<Posting> findAllJpa(){
-        return em.createQuery("select p from Posting p",Posting.class)
+        List<Posting> post =  em.createQuery("select p from Posting p order by p.time desc",Posting.class)
                 .getResultList();
+        post.forEach(posting -> posting.setImages(em.createQuery("select i from Image i where i.posting = :posting", Image.class)
+                        .setParameter("posting",posting).getResultList()));
+        return post;
     }
 
     public List<Posting> findByUser(User loginUser){
@@ -52,7 +68,6 @@ public class PostingRepository {
         update.setContent(posting.getContent());
         update.setUser(posting.getUser());
         update.setTime(posting.getTime());
-        update.setUserName(posting.getUserName());
         em.merge(update);
         return update;
     }

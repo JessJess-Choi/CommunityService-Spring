@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalTime;
-import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -30,7 +29,7 @@ public class MessageController {
     public String userProfileJpa(@Login User loginUser, Model model){
         log.info("id : {}, loginId : {} DM 접속",loginUser.getId(),loginUser.getLoginId());
         model.addAttribute("user",loginUser);
-        model.addAttribute("follow",followService.findById(loginUser));
+        model.addAttribute("follow",followService.findByUser(loginUser));
         return "directmessage/directmessage";
     }
 
@@ -47,7 +46,7 @@ public class MessageController {
                               @ModelAttribute("messageForm") MessageForm messageForm){
 
         List<Message> messageList = messageService.findByUser(loginUser,receiverId);
-        Collections.sort(messageList, (o1,o2) -> o1.getLocalTime().compareTo(o2.getLocalTime()));
+ //       Collections.sort(messageList, (o1,o2) -> o1.getLocalTime().compareTo(o2.getLocalTime()));
 
         messageList.forEach((m) -> log.info("message list : {}",m.getMessage()));
 
@@ -61,7 +60,7 @@ public class MessageController {
     public String sendMessageToReceiverJpa(@PathVariable("receiverId") String receiverId,
                                         @Login User loginUser,
                                         @ModelAttribute("messageForm") MessageForm messageForm){
-        Message message = new Message(loginUser,messageService.findOne(receiverId).getLoginId(),messageForm.getMessage(),LocalTime.now());
+        Message message = new Message(loginUser,messageService.findOne(receiverId),messageForm.getMessage(),LocalTime.now());
         messageService.joinJpa(message);
         return "redirect:/directmessage/" + receiverId;
     }

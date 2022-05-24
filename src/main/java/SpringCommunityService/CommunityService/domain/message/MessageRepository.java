@@ -21,11 +21,9 @@ public class MessageRepository {
     }
 
     public List<Message> findByUser(User loginUser, User receiverUser) {
-        return em.createQuery("select m from Message m where (m.user = :user and m.receiverId = :receiverId) or (m.user = :receiver and m.receiverId = :userLoginId)",Message.class)
+        return em.createQuery("select m from Message m where (m.user = :user and m.receiver = :receiver) or (m.user = :receiver and m.receiver = :user) order by m.localTime",Message.class)
                 .setParameter("user",loginUser)
-                .setParameter("receiverId",receiverUser.getLoginId())
                 .setParameter("receiver",receiverUser)
-                .setParameter("userLoginId",loginUser.getLoginId())
                 .getResultList();
     }
 

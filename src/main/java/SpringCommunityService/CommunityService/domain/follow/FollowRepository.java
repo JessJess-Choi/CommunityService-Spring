@@ -20,21 +20,27 @@ public class FollowRepository {
         return follow;
     }
 
-    public List<User> findByIdJpa(User user){
-        return em.createQuery("select u from User u where u.loginId in (select f.followingId from Follow f where f.user = :id)",User.class)
+    public List<User> findByUserIdJpa(User user){
+        return em.createQuery("select u from User u where u in (select f.follow from Follow f where f.user = :id)",User.class)
                                     .setParameter("id",user)
                                     .getResultList();
     }
 
-    public List<Follow> findByLoginIdJpa(String id){
-        return em.createQuery("select f from Follow f where f.userId = :id",Follow.class)
-                .setParameter("id",id)
+    public List<User> findExceptByUserIdJpa(User user){
+        return em.createQuery("select u from User u where u <> :user and u not in (select f.follow from Follow f where f.user = :user)",User.class)
+                .setParameter("user",user)
                 .getResultList();
     }
 
-    public Follow findOne(User user, String followId){
-        return em.createQuery("select f from Follow f where f.followingId = :id and f.user = :user",Follow.class)
-                .setParameter("id",followId)
+    public List<Follow> findByLoginUserJpa(User loginUser){
+        return em.createQuery("select f from Follow f where f.user = :user",Follow.class)
+                .setParameter("user",loginUser)
+                .getResultList();
+    }
+
+    public Follow findOne(User user, User follow){
+        return em.createQuery("select f from Follow f where f.follow = :id and f.user = :user",Follow.class)
+                .setParameter("id",follow)
                 .setParameter("user",user)
                 .getSingleResult();
     }

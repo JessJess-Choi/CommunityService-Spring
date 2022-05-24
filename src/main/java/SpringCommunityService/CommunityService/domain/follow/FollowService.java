@@ -25,15 +25,19 @@ public class FollowService {
         return follow.getId();
     }
 
-    public List<User> findById(User user){
-        return followRepository.findByIdJpa(user);
+    public List<User> findByUser(User user){
+        return followRepository.findByUserIdJpa(user);
     }
 
-    public List<String> findByLoginId(String id){
-        List<Follow> following = followRepository.findByLoginIdJpa(id);
+    public List<User> findExceptByUser(User user){
+        return followRepository.findExceptByUserIdJpa(user);
+    }
+
+    public List<String> findByLoginUserJpa(User loginUser){
+        List<Follow> following = followRepository.findByLoginUserJpa(loginUser);
         List<String> followString = new ArrayList<>();
         following.forEach((follow -> {
-            followString.add(follow.getFollowingId());
+            followString.add(follow.getFollow().getName());
         }));
         return followString;
     }
@@ -43,7 +47,7 @@ public class FollowService {
         followRepository.unfollow(follow);
     }
 
-    public Follow findOne(User user, String followId) {
-        return followRepository.findOne(user,followId);
+    public Follow findOne(User user, User follow) {
+        return followRepository.findOne(user,follow);
     }
 }

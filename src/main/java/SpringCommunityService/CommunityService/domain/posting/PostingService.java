@@ -34,12 +34,7 @@ public class PostingService {
     }
 
     public List<Posting> findByUser(String user){
-        List<Posting> find = new ArrayList<>();
-        List<User> findAllUsers = userService.findUserByUserName(user);
-        findAllUsers.forEach((u) -> {
-            find.addAll(postingRepository.findByUser(u));
-        });
-        return find;
+        return postingRepository.findPostingByUser(user);
     }
 
     public List<Posting> findByContent(String content){
