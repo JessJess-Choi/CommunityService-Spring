@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
     <meta charset="utf-8">
     <link th:href="@{/css/bootstrap.min.css}"
           href="../css/bootstrap.min.css" rel="stylesheet">
@@ -44,7 +45,7 @@
         </div>
         <div>
             <label for="password">이름</label>
-            <input type="password" id="name" th:field="*{name}" class="form-control"
+            <input type="text" id="name" th:field="*{name}" class="form-control"
                    th:errorclass="field-error">
             <div class="field-error" th:errors="*{name}" />
         </div>

@@ -46,7 +46,6 @@ public class MessageController {
                               @ModelAttribute("messageForm") MessageForm messageForm){
 
         List<Message> messageList = messageService.findByUser(loginUser,receiverId);
- //       Collections.sort(messageList, (o1,o2) -> o1.getLocalTime().compareTo(o2.getLocalTime()));
 
         messageList.forEach((m) -> log.info("message list : {}",m.getMessage()));
 
