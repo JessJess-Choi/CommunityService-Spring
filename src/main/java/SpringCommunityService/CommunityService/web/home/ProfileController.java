@@ -1,8 +1,6 @@
 package SpringCommunityService.CommunityService.web.home;
 
-import SpringCommunityService.CommunityService.domain.follow.FollowRepository;
 import SpringCommunityService.CommunityService.domain.user.User;
-import SpringCommunityService.CommunityService.domain.user.UserRepository;
 import SpringCommunityService.CommunityService.web.argumentresolver.Login;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

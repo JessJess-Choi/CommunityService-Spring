@@ -2,7 +2,6 @@ package SpringCommunityService.CommunityService.domain.posting;
 
 import SpringCommunityService.CommunityService.domain.image.Image;
 import SpringCommunityService.CommunityService.domain.user.User;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

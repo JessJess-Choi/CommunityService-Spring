@@ -4,7 +4,6 @@ import SpringCommunityService.CommunityService.domain.user.User;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Data
 @Entity

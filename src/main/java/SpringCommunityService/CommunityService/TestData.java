@@ -4,7 +4,6 @@ import SpringCommunityService.CommunityService.domain.follow.Follow;
 import SpringCommunityService.CommunityService.domain.follow.FollowService;
 import SpringCommunityService.CommunityService.domain.message.Message;
 import SpringCommunityService.CommunityService.domain.message.MessageService;
-import SpringCommunityService.CommunityService.domain.posting.Posting;
 import SpringCommunityService.CommunityService.domain.posting.PostingService;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.domain.user.UserService;

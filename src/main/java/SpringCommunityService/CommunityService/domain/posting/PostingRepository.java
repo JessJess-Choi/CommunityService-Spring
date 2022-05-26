@@ -1,7 +1,6 @@
 package SpringCommunityService.CommunityService.domain.posting;
 
 import SpringCommunityService.CommunityService.domain.image.Image;
-import SpringCommunityService.CommunityService.domain.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
@@ -55,12 +54,6 @@ public class PostingRepository {
         post.forEach(posting -> posting.setImages(em.createQuery("select i from Image i where i.posting = :posting", Image.class)
                         .setParameter("posting",posting).getResultList()));
         return post;
-    }
-
-    public List<Posting> findByUser(User loginUser){
-        return em.createQuery("select p from Posting p where p.user  = :user",Posting.class)
-                .setParameter("user",loginUser)
-                .getResultList();
     }
 
     public Posting setJpa(Long id, Posting posting){

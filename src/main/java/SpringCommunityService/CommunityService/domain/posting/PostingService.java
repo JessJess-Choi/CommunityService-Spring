@@ -1,13 +1,10 @@
 package SpringCommunityService.CommunityService.domain.posting;
 
-import SpringCommunityService.CommunityService.domain.image.ImageService;
-import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.domain.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,15 +30,6 @@ public class FollowService {
 
     public List<User> findExceptByUser(User user){
         return followRepository.findExceptByUserIdJpa(user);
-    }
-
-    public List<String> findByLoginUserJpa(User loginUser){
-        List<Follow> following = followRepository.findByLoginUserJpa(loginUser);
-        List<String> followString = new ArrayList<>();
-        following.forEach((follow -> {
-            followString.add(follow.getFollow().getName());
-        }));
-        return followString;
     }
 
     @Transactional
