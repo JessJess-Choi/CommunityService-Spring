@@ -32,12 +32,6 @@ public class FollowRepository {
                 .getResultList();
     }
 
-    public List<Follow> findByLoginUserJpa(User loginUser){
-        return em.createQuery("select f from Follow f where f.user = :user",Follow.class)
-                .setParameter("user",loginUser)
-                .getResultList();
-    }
-
     public Follow findOne(User user, User follow){
         return em.createQuery("select f from Follow f where f.follow = :id and f.user = :user",Follow.class)
                 .setParameter("id",follow)

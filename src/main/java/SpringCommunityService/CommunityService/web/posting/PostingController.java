@@ -2,12 +2,14 @@ package SpringCommunityService.CommunityService.web.posting;
 
 import SpringCommunityService.CommunityService.domain.image.Image;
 import SpringCommunityService.CommunityService.domain.image.ImageService;
+import SpringCommunityService.CommunityService.domain.like.LikeService;
 import SpringCommunityService.CommunityService.domain.posting.Posting;
 import SpringCommunityService.CommunityService.domain.posting.PostingService;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.file.FileStore;
 import SpringCommunityService.CommunityService.web.argumentresolver.Login;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -31,6 +33,18 @@ public class PostingController {
 
     private final PostingService postingService;
     private final ImageService imageService;
+    private final LikeService likeService;
+
+    @GetMapping("/posting")
+    public String userPostingJpa(@Login User loginUser, Model model){
+
+        log.info("id : {}, loginId : {} 게시판 접속",loginUser.getId(),loginUser.getLoginId());
+        List<Posting> allPosts = postingService.findAll();
+
+        model.addAttribute("user",loginUser);
+        model.addAttribute("posting",allPosts);
+        return "posting/posting";
+    }
 
     @PostMapping("/posting")
     public String goToHome(@Login User loginUser, Model model){
@@ -42,38 +56,6 @@ public class PostingController {
     @GetMapping("/posting/add")
     public String goPostingForm(@ModelAttribute("postingForm") PostingForm postingForm){
         return "posting/postingForm";
-    }
-
-    @ResponseBody
-    @GetMapping("/images/{filename}")
-    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
-        log.info("url : {}, {}",filename,"file:" + fileStore.getFullPath(filename));
-        return new UrlResource("file:" + fileStore.getFullPath(filename));
-    }
-
-    @GetMapping("/posting/search/postingId")
-    public String searchPostingId(@Login User user, Model model,
-                                  @ModelAttribute("postingForm") PostingForm postingForm){
-        model.addAttribute("user",user);
-        return "posting/searchByName";
-    }
-
-    @GetMapping("/posting/search/content")
-    public String searchPostingContent(@Login User user, Model model,
-                                  @ModelAttribute("postingForm") PostingForm postingForm){
-        model.addAttribute("user",user);
-        return "posting/searchByContent";
-    }
-
-    @GetMapping("/posting")
-    public String userPostingJpa(@Login User loginUser, Model model){
-
-        log.info("id : {}, loginId : {} 게시판 접속",loginUser.getId(),loginUser.getLoginId());
-        List<Posting> allPosts = postingService.findAll();
-
-        model.addAttribute("user",loginUser);
-        model.addAttribute("posting",allPosts);
-        return "posting/posting";
     }
 
     @PostMapping("/posting/add")
@@ -94,6 +76,53 @@ public class PostingController {
         log.info("newContent Mapping");
         log.info("{}",postingForm.getContent());
         return "redirect:/posting";
+    }
+
+    @ResponseBody
+    @GetMapping("/images/{filename}")
+    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
+        log.info("url : {}, {}",filename,"file:" + fileStore.getFullPath(filename));
+        return new UrlResource("file:" + fileStore.getFullPath(filename));
+    }
+
+    @GetMapping("/posting/search/postingId")
+    public String searchPostingId(@Login User user, Model model,
+                                  @ModelAttribute("postingForm") PostingForm postingForm){
+        model.addAttribute("user",user);
+        return "posting/searchByName";
+    }
+
+    @PostMapping("/posting/search/postingId")
+    public String searchPostingByNameJpa(@Login User loginUser, Model model,
+                                         @ModelAttribute("postingForm") PostingForm postingForm){
+
+        String searchContent = postingForm.getContent();
+        log.info("포스팅 작성자 검색 : {}",searchContent);
+        List<Posting> allSearchPosts = postingService.findByUser(postingForm.getContent());
+
+        model.addAttribute("user",loginUser);
+        model.addAttribute("posting",allSearchPosts);
+        return "posting/posting";
+    }
+
+    @GetMapping("/posting/search/content")
+    public String searchPostingContent(@Login User user, Model model,
+                                  @ModelAttribute("postingForm") PostingForm postingForm){
+        model.addAttribute("user",user);
+        return "posting/searchByContent";
+    }
+
+    @PostMapping("/posting/search/content")
+    public String searchByPostingContentJpa(@Login User loginUser, Model model,
+                                            @ModelAttribute("postingForm") PostingForm postingForm){
+        String searchContent = postingForm.getContent();
+        log.info("포스팅 내용 검색 : {}",searchContent);
+
+        List<Posting> allSearchPosts = postingService.findByContent(postingForm.getContent());
+
+        model.addAttribute("user",loginUser);
+        model.addAttribute("posting",allSearchPosts);
+        return "posting/posting";
     }
 
     @GetMapping("/posting/edit/{postingId}")
@@ -169,29 +198,10 @@ public class PostingController {
         return "redirect:/posting";
     }
 
-    @PostMapping("/posting/search/postingId")
-    public String searchPostingByNameJpa(@Login User loginUser, Model model,
-                                         @ModelAttribute("postingForm") PostingForm postingForm){
-
-        String searchContent = postingForm.getContent();
-        log.info("포스팅 작성자 검색 : {}",searchContent);
-        List<Posting> allSearchPosts = postingService.findByUser(postingForm.getContent());
-
-        model.addAttribute("user",loginUser);
-        model.addAttribute("posting",allSearchPosts);
-        return "posting/posting";
+    @GetMapping("/like/{postingId}")
+    public String like(@PathVariable("postingId") Long postingId, @Login User user){
+        likeService.changeLike(user,postingService.findByIdJpa(postingId));
+        return "redirect:/posting";
     }
 
-    @PostMapping("/posting/search/content")
-    public String searchByPostingContentJpa(@Login User loginUser, Model model,
-                                         @ModelAttribute("postingForm") PostingForm postingForm){
-        String searchContent = postingForm.getContent();
-        log.info("포스팅 내용 검색 : {}",searchContent);
-
-        List<Posting> allSearchPosts = postingService.findByContent(postingForm.getContent());
-
-        model.addAttribute("user",loginUser);
-        model.addAttribute("posting",allSearchPosts);
-        return "posting/posting";
-    }
 }

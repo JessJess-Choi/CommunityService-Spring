@@ -26,6 +26,7 @@ public class Posting {
     @Transient
     private List<Image> images;
     private LocalTime time;
+    private Long likeNumber;
 
     public Posting(){
     }
@@ -34,5 +35,14 @@ public class Posting {
         this.user = user;
         this.content = content;
         this.time = time;
+        this.likeNumber = 0L;
+    }
+
+    public void addLike(){
+        this.likeNumber++;
+    }
+
+    public void removeLike(){
+        this.likeNumber--;
     }
 }

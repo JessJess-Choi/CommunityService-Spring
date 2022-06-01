@@ -2,8 +2,11 @@ package SpringCommunityService.CommunityService;
 
 import SpringCommunityService.CommunityService.domain.follow.Follow;
 import SpringCommunityService.CommunityService.domain.follow.FollowService;
+import SpringCommunityService.CommunityService.domain.like.LikeIt;
+import SpringCommunityService.CommunityService.domain.like.LikeService;
 import SpringCommunityService.CommunityService.domain.message.Message;
 import SpringCommunityService.CommunityService.domain.message.MessageService;
+import SpringCommunityService.CommunityService.domain.posting.Posting;
 import SpringCommunityService.CommunityService.domain.posting.PostingService;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.domain.user.UserService;
@@ -21,6 +24,7 @@ public class TestData {
     private final FollowService followService;
     private final MessageService messageService;
     private final PostingService postingService;
+    private final LikeService likeService;
 
     @PostConstruct
     public void initForJpa(){
@@ -34,6 +38,12 @@ public class TestData {
         Message message2 = new Message(user2,user1,"testMessage2",LocalTime.now().minusSeconds(5L));
         Message message3 = new Message(user1,user2,"testMessage3",LocalTime.now().minusSeconds(10L));
         Message message4 = new Message(user3,user2,"testMessage3",LocalTime.now());
+        Posting posting1 = new Posting(user1,"content1",LocalTime.now());
+        Posting posting2 = new Posting(user1,"content2",LocalTime.now().minusHours(1L));
+        Posting posting3 = new Posting(user2,"content3",LocalTime.now().minusMinutes(30));
+        LikeIt like1 = new LikeIt(user2.getName(),posting1);
+        LikeIt like2 = new LikeIt(user3.getName(),posting1);
+        LikeIt like3 = new LikeIt(user2.getName(),posting2);
 
         userService.joinJpa(user1);
         userService.joinJpa(user2);
@@ -45,5 +55,11 @@ public class TestData {
         messageService.joinJpa(message2);
         messageService.joinJpa(message3);
         messageService.joinJpa(message4);
+        postingService.joinJpa(posting1);
+        postingService.joinJpa(posting2);
+        postingService.joinJpa(posting3);
+        likeService.joinJpa(like1);
+        likeService.joinJpa(like2);
+        likeService.joinJpa(like3);
     }
 }

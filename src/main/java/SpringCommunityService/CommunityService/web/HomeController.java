@@ -19,6 +19,7 @@ public class HomeController {
         if(loginUser == null){
             return "home";
         }
+
         model.addAttribute("user",loginUser);
         return "loginHome";
     }

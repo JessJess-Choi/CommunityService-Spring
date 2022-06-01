@@ -12,12 +12,10 @@ import java.util.List;
 public class PostingService {
 
     private final PostingRepository postingRepository;
-    private final UserService userService;
 
     @Autowired
-    public PostingService(PostingRepository postingRepository, UserService userService){
+    public PostingService(PostingRepository postingRepository){
         this.postingRepository = postingRepository;
-        this.userService = userService;
     }
 
     @Transactional

@@ -1,5 +1,6 @@
 package SpringCommunityService.CommunityService.web.user;
 
+import SpringCommunityService.CommunityService.domain.like.LikeService;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.domain.user.UserService;
 import lombok.RequiredArgsConstructor;

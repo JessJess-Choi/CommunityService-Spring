@@ -27,13 +27,6 @@ public class MessageRepository {
                 .getResultList();
     }
 
-    public String findUserId(User user) {
-        return em.createQuery("select u from User u where u.id = :id",User.class)
-                .setParameter("id",user.getId())
-                .getSingleResult()
-                .getLoginId();
-    }
-
     public User findOne(String receiverId) {
         return em.createQuery("select u from User u where u.id = :receiverId",User.class)
                 .setParameter("receiverId",Long.parseLong(receiverId))
