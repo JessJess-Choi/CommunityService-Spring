@@ -34,15 +34,9 @@ public class UserService {
         }
     }
 
-    public List<User> findUsers(){
-        return userRepository.findAllJpa();
-    }
 
     public User findOne(Long id){
         return userRepository.findOneJpa(id);
     }
 
-    public List<User> findUserByUserName(String name){
-        return userRepository.findOneByNameJpa(name);
-    }
 }

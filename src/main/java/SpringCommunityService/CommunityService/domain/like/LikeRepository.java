@@ -43,4 +43,9 @@ public class LikeRepository {
         em.persist(likeIt);
     }
 
+    public void removeByPostingJpa(Posting posting) {
+        em.createQuery("select l from LikeIt l where l.posting = :posting",LikeIt.class)
+                                .setParameter("posting",posting)
+                .getResultList().forEach(likeIt -> em.remove(likeIt));
+    }
 }

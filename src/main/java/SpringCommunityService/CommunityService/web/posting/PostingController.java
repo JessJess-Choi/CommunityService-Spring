@@ -152,7 +152,7 @@ public class PostingController {
     @PostMapping("/posting/edit/{postingId}")
     public String editJpa(@Valid @ModelAttribute("postingForm") PostingForm postingForm,
                           BindingResult bindingResult, @Login User loginUser,
-                          @PathVariable("postingId") String postingId) throws IOException {
+                          @PathVariable("postingId") Long postingId) throws IOException {
 
         if(postingForm.getContent().isEmpty()){
             bindingResult.reject("postingFail","포스팅 내용 입력하세요");
@@ -163,16 +163,15 @@ public class PostingController {
         log.info("{}",postingId);
         log.info("postingForm content : {}",postingForm.getContent());
 
-        Posting posting = new Posting(loginUser,postingForm.getContent(), LocalTime.now());
+        Posting posting = postingService.findByIdJpa(postingId);//new Posting(loginUser,postingForm.getContent(),LocalTime.now());
+        posting.setContent(postingForm.getContent());
         List<Image> storeImageFiles = fileStore.storeFiles(posting,postingForm.getImageFiles());
         posting.setImages(storeImageFiles);
 
         log.info("log for update : {}",posting.getContent());
-        List<Image> removeImages = imageService.removeJpa(postingService.findByIdJpa(Long.parseLong(postingId)));
-        removeImages.forEach((i) -> {
-            log.info("remove image : {},{}",i.getId(),i.getPosting());
-        });
-        postingService.setJpa(Long.parseLong(postingId),posting);
+        imageService.removeJpa(postingService.findByIdJpa(postingId));
+
+        postingService.setJpa(postingId,posting);
 
         if(storeImageFiles == null){
             log.info("storeImageFiles null");
@@ -182,9 +181,12 @@ public class PostingController {
                 imageService.joinJpa(image);
             });
         }
-        if(posting.getId() != null) {
-            postingService.removeJpa(postingService.findByIdJpa(Long.parseLong(postingId)));
+/*        if(posting.getId() != null) {
+            likeService.removeJpa(postingService.findByIdJpa(postingId));
+            postingService.removeJpa(postingService.findByIdJpa(postingId));
         }
+
+ */
         log.info("{}",posting.getContent());
         log.info("edit End");
         return "redirect:/posting";
@@ -192,9 +194,10 @@ public class PostingController {
 
     @GetMapping("/posting/edit/remove/{postingId}")
     public String removePosting(@PathVariable("postingId") String postingId){
+        likeService.removeJpa(postingService.findByIdJpa(Long.parseLong(postingId)));
         imageService.removeJpa(postingService.findByIdJpa(Long.parseLong(postingId)));
-        Posting removePosting = postingService.removeJpa(postingService.findByIdJpa(Long.parseLong(postingId)));
-        log.info("remove contents : {}",removePosting.getContent());
+        postingService.removeJpa(postingService.findByIdJpa(Long.parseLong(postingId)));
+//        log.info("remove contents : {}",removePosting.getContent());
         return "redirect:/posting";
     }
 

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j
@@ -20,9 +21,8 @@ public class PostingRepository {
         return posting;
     }
 
-    public Posting removeJpa(Posting posting){
+    public void removeJpa(Posting posting){
         em.remove(posting);
-        return posting;
     }
 
     public Posting findByIdJpa(Long id){
@@ -59,9 +59,8 @@ public class PostingRepository {
     public Posting setJpa(Long id, Posting posting){
         Posting update = em.find(Posting.class,id);
         update.setContent(posting.getContent());
-        update.setUser(posting.getUser());
-        update.setTime(posting.getTime());
-        em.merge(update);
+        update.setTime(LocalTime.now());
+        update.setLikeNumber(posting.getLikeNumber());
         return update;
     }
 

@@ -1,5 +1,8 @@
 package SpringCommunityService.CommunityService.domain.posting;
 
+import SpringCommunityService.CommunityService.domain.image.Image;
+import SpringCommunityService.CommunityService.domain.image.ImageService;
+import SpringCommunityService.CommunityService.domain.like.LikeService;
 import SpringCommunityService.CommunityService.domain.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +50,7 @@ public class PostingService {
     }
 
     @Transactional
-    public Posting removeJpa(Posting posting){
-        return postingRepository.removeJpa(posting);
+    public void removeJpa(Posting posting){
+        postingRepository.removeJpa(posting);
     }
 }

@@ -37,9 +37,9 @@ public class FollowController {
     }
 
     @GetMapping("/unfollowToFollow/{followId}")
-    public String unfollowToFollowJpa(@Login User loginUser, Model model, @PathVariable("followId") String followId){
+    public String unfollowToFollowJpa(@Login User loginUser, Model model, @PathVariable("followId") Long followId){
         log.info("{} 유저가 {} 유저 팔로우 시작");
-        followService.joinJpa(new Follow(loginUser,userService.findOne(Long.parseLong(followId))));
+        followService.joinJpa(new Follow(loginUser,userService.findOne(followId)));
         model.addAttribute("user",loginUser);
         model.addAttribute("follow",followService.findByUser(loginUser));
         model.addAttribute("unFollow",followService.findExceptByUser(loginUser));
@@ -47,9 +47,9 @@ public class FollowController {
     }
 
     @GetMapping("/followToUnfollow/{followId}")
-    public String followToUnfollowJpa(@Login User loginUser, Model model, @PathVariable("followId") String followId){
+    public String followToUnfollowJpa(@Login User loginUser, Model model, @PathVariable("followId") Long followId){
         log.info("{} 유저가 {} 유저 언팔로우",loginUser.getLoginId(),followId);
-        followService.unfollowById(followService.findOne(loginUser, userService.findOne(Long.parseLong(followId))));
+        followService.unfollowById(followService.findOne(loginUser, userService.findOne(followId)));
         model.addAttribute("user",loginUser);
         model.addAttribute("follow",followService.findByUser(loginUser));
         model.addAttribute("unFollow",followService.findExceptByUser(loginUser));

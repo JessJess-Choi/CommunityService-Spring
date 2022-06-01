@@ -18,12 +18,10 @@ import java.util.stream.Collectors;
 public class LikeService {
 
     private final LikeRepository likeRepository;
-    private final PostingService postingService;
 
     @Autowired
     public LikeService(LikeRepository likeRepository, PostingService postingService){
         this.likeRepository = likeRepository;
-        this.postingService = postingService;
     }
 
     @Transactional
@@ -41,5 +39,10 @@ public class LikeService {
         else{
             likeRepository.removeJpa(findLike.get());
         }
+    }
+
+    @Transactional
+    public void removeJpa(Posting posting) {
+        likeRepository.removeByPostingJpa(posting);
     }
 }
