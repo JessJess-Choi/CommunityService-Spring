@@ -11,6 +11,8 @@ import java.util.List;
 public class PostingForm {
 
     @NotEmpty
+    private String title;
+    @NotEmpty
     private String content;
     @Nullable
     private List<MultipartFile> imageFiles;

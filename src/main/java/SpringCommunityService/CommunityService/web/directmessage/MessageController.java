@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class MessageController {
     public String sendMessageToReceiverJpa(@PathVariable("receiverId") String receiverId,
                                         @Login User loginUser,
                                         @ModelAttribute("messageForm") MessageForm messageForm){
-        Message message = new Message(loginUser,messageService.findOne(receiverId),messageForm.getMessage(),LocalTime.now());
+        Message message = new Message(loginUser,messageService.findOne(receiverId),messageForm.getMessage(), LocalDateTime.now());
         messageService.joinJpa(message);
         return "redirect:/directmessage/" + receiverId;
     }

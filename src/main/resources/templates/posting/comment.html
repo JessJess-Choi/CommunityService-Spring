@@ -12,9 +12,8 @@
   </style>
 </head>
 <body>
-<h1>게시글 수정</h1>
+<h1>댓글 달기</h1>
 <br>
-<h3>원래 내용</h3>
 <span th:text="|제목 : ${posting.getTitle()}|"></span>
 <br>
 <span th:text="|내용 : ${posting.getContent()}|"></span>
@@ -23,33 +22,34 @@
 <br>
 <br>
 
+<h2>현재 댓글</h2>
+<h4 class="mb-3" th:each="c : ${comment}">
+  <span th:text="|${c.user.name} : ${c.content}|"></span>
+  <br>
+</h4>
+
 <div class="container">
 
   <div class="py-5 text-center">
-    <h2>포스팅</h2>
   </div>
 
-  <form th:action th:object="${postingForm}" method="post" enctype="multipart/form-data">
+  <form th:action th:object="${commentForm}" method="post" enctype="multipart/form-data">
 
     <div th:if="${#fields.hasGlobalErrors()}">
       <p class="field-error" th:each="err : ${#fields.globalErrors()}" th:text="${err}">전체 오류 메시지</p>
     </div>
 
     <div>
-      <label for="title">포스팅 제목</label>
-      <input type="text" id="title" th:field="*{title}" class="form-control"
+      <label for="comment">댓글 내용</label>
+      <input type="text" id="comment" th:field="*{content}" class="form-control"
              th:errorclass="field-error">
-      <label for="loginId">포스팅 내용</label>
-      <input type="text" id="loginId" th:field="*{content}" class="form-control"
-             th:errorclass="field-error">
-      <li>이미지 파일들<input type="file" multiple="multiple" name="imageFiles" ></li>
       <div class="field-error" th:errors="*{content}" />
     </div>
 
     <div class="row">
       <div class="col">
         <button class="w-100 btn btn-primary btn-lg" type="submit"
-                th:onclick="|location.href='@{/posting/edit/{postingId} (postingId=${posting.getId()})}'|">저장</button>
+                th:onclick="|location.href='@{/posting/comment/{postingId} (postingId=${posting.getId()})}'|">저장</button>
       </div>
       <div class="col">
         <button class="w-100 btn btn-secondary btn-lg"
@@ -59,10 +59,6 @@
     </div>
 
   </form>
-  <div class="col">
-    <button class="w-100 btn btn-danger btn-lg"
-            th:onclick="|location.href='@{/posting/edit/remove/{postingId} (postingId=${posting.getId()})}'|">게시글 삭제</button>
-  </div>
 </div>
 
 

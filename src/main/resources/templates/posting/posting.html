@@ -28,8 +28,8 @@
 </div>
 <br>
 <br>
-<a th:href="@{/posting/search/postingId}" style="background-color: blue;color: black" role="button">작성자 검색</a>
-<a th:href="@{/posting/search/content}" style="background-color: blue;color: black" role="button">게시물 검색</a>
+<a th:href="@{/posting/search/postingId}" style="background-color: chocolate;color: black" role="button">작성자 검색</a>
+<a th:href="@{/posting/search/content}" style="background-color: khaki;color: black" role="button">게시물 검색</a>
 <br>
 
 <h4 class="mb-3" th:text="|${user.name} 님 안녕하세요|">로그인 사용자 이름</h4>
@@ -38,11 +38,17 @@
 <br>
 <h4 class="mb-3" th:each="post : ${posting}">
   <span th:text="|작성자 : ${post.user.name}|"></span>
-  <span th:text="${post.content}"></span>
-  <span th:text="|${post.time.hour}:${post.time.minute}|"></span>
-  <img th:each="image : ${post.images}" th:src="|/images/${image.getStoreFileName()}|" width="300" height="300"/>
-  <a th:href="@{/like/{postingId} (postingId=${post.id})}" th:text="|좋아요 : ${post.getLikeNumber()}|" style="background-color: blue;color: black" role="button"></a>
   <br>
+  <span th:text="|제목 : ${post.title}|"></span>
+  <br>
+  <span th:text="|내용 : ${post.content}|"></span>
+  <br>
+  <img th:each="image : ${post.images}" th:src="|/images/${image.getStoreFileName()}|" width="300" height="300"/>
+  <br>
+  <span th:text="|작성 시간 : ${post.time.year}-${post.time.monthValue}-${post.time.dayOfMonth} ${post.time.hour}:${post.time.minute}|"></span>
+  <br>
+  <a th:href="@{/like/{postingId} (postingId=${post.id})}" th:text="|좋아요 : ${post.getLikeNumber()}|" style="background-color: green;color: black" role="button"></a>
+  <a th:href="@{/posting/comment/{postingId} (postingId=${post.id})}" style="background-color: pink;color: black" role="button">댓글</a>
   <a th:href="@{/posting/edit/{postingId} (postingId=${post.id})}" style="background-color: blue;color: black" role="button">편집</a>
   <br>
 </h4>

@@ -24,8 +24,8 @@ public class LikeRepository {
     }
 
     public Optional<LikeIt> findLike(User user, Posting posting) {
-        return em.createQuery("select l from LikeIt l where l.posting = :posting and l.userName = :userName",LikeIt.class)
-                    .setParameter("userName",user.getName())
+        return em.createQuery("select l from LikeIt l where l.posting = :posting and l.user = :user",LikeIt.class)
+                    .setParameter("user",user)
                     .setParameter("posting",posting)
                     .getResultList().stream().findAny();
     }

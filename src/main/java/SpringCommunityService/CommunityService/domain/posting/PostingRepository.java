@@ -1,11 +1,13 @@
 package SpringCommunityService.CommunityService.domain.posting;
 
 import SpringCommunityService.CommunityService.domain.image.Image;
+import SpringCommunityService.CommunityService.domain.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -39,12 +41,19 @@ public class PostingRepository {
         return ret;
     }
 
+    public List<Posting> findUserPosting(User user){
+        return em.createQuery("select p from Posting p where p.user = :user",Posting.class)
+                .setParameter("user",user)
+                .getResultList();
+    }
+
     public List<Posting> findPostingByUser(String userName){
         List<Posting> ret =  em.createQuery("select p from Posting p where p.user in (select u from User u where u.name like concat('%',:userName,'%') ) order by p.time desc",Posting.class)
                 .setParameter("userName",userName)
                 .getResultList();
         ret.forEach(posting -> posting.setImages(em.createQuery("select i from Image i where i.posting = :posting",Image.class)
                     .setParameter("posting",posting).getResultList()));
+
         return ret;
     }
 
@@ -59,7 +68,7 @@ public class PostingRepository {
     public Posting setJpa(Long id, Posting posting){
         Posting update = em.find(Posting.class,id);
         update.setContent(posting.getContent());
-        update.setTime(LocalTime.now());
+        update.setTime(LocalDateTime.now());
         update.setLikeNumber(posting.getLikeNumber());
         return update;
     }

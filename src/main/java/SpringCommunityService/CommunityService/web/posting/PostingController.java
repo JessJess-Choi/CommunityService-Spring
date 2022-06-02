@@ -1,5 +1,7 @@
 package SpringCommunityService.CommunityService.web.posting;
 
+import SpringCommunityService.CommunityService.domain.comment.Comment;
+import SpringCommunityService.CommunityService.domain.comment.CommentService;
 import SpringCommunityService.CommunityService.domain.image.Image;
 import SpringCommunityService.CommunityService.domain.image.ImageService;
 import SpringCommunityService.CommunityService.domain.like.LikeService;
@@ -9,7 +11,6 @@ import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.file.FileStore;
 import SpringCommunityService.CommunityService.web.argumentresolver.Login;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -34,6 +36,7 @@ public class PostingController {
     private final PostingService postingService;
     private final ImageService imageService;
     private final LikeService likeService;
+    private final CommentService commentService;
 
     @GetMapping("/posting")
     public String userPostingJpa(@Login User loginUser, Model model){
@@ -68,7 +71,7 @@ public class PostingController {
             return "posting/postingForm";
         }
 
-        Posting posting = new Posting(loginUser,postingForm.getContent(),LocalTime.now());
+        Posting posting = new Posting(loginUser,postingForm.getTitle(),postingForm.getContent(), LocalDateTime.now());
         List<Image> storeImages = fileStore.storeFiles(posting,postingForm.getImageFiles());
         posting.setImages(storeImages);
         postingService.joinJpa(posting);
@@ -126,11 +129,11 @@ public class PostingController {
     }
 
     @GetMapping("/posting/edit/{postingId}")
-    public String editPostingJpa(@PathVariable("postingId") String postingId, Model model,
+    public String editPostingJpa(@PathVariable("postingId") Long postingId, Model model,
                                  @ModelAttribute("postingForm") PostingForm postingForm,
                                  BindingResult bindingResult, @Login User loginUser){
         log.info("editPosting : {}",postingId);
-        Posting posting = postingService.findByIdJpa(Long.parseLong(postingId));
+        Posting posting = postingService.findByIdJpa(postingId);
         List<Image> images = imageService.findByPosting(posting);
         posting.setImages(images);
 
@@ -151,7 +154,7 @@ public class PostingController {
 
     @PostMapping("/posting/edit/{postingId}")
     public String editJpa(@Valid @ModelAttribute("postingForm") PostingForm postingForm,
-                          BindingResult bindingResult, @Login User loginUser,
+                          BindingResult bindingResult,
                           @PathVariable("postingId") Long postingId) throws IOException {
 
         if(postingForm.getContent().isEmpty()){
@@ -163,7 +166,7 @@ public class PostingController {
         log.info("{}",postingId);
         log.info("postingForm content : {}",postingForm.getContent());
 
-        Posting posting = postingService.findByIdJpa(postingId);//new Posting(loginUser,postingForm.getContent(),LocalTime.now());
+        Posting posting = postingService.findByIdJpa(postingId);
         posting.setContent(postingForm.getContent());
         List<Image> storeImageFiles = fileStore.storeFiles(posting,postingForm.getImageFiles());
         posting.setImages(storeImageFiles);
@@ -181,23 +184,17 @@ public class PostingController {
                 imageService.joinJpa(image);
             });
         }
-/*        if(posting.getId() != null) {
-            likeService.removeJpa(postingService.findByIdJpa(postingId));
-            postingService.removeJpa(postingService.findByIdJpa(postingId));
-        }
-
- */
         log.info("{}",posting.getContent());
         log.info("edit End");
         return "redirect:/posting";
     }
 
     @GetMapping("/posting/edit/remove/{postingId}")
-    public String removePosting(@PathVariable("postingId") String postingId){
-        likeService.removeJpa(postingService.findByIdJpa(Long.parseLong(postingId)));
-        imageService.removeJpa(postingService.findByIdJpa(Long.parseLong(postingId)));
-        postingService.removeJpa(postingService.findByIdJpa(Long.parseLong(postingId)));
-//        log.info("remove contents : {}",removePosting.getContent());
+    public String removePosting(@PathVariable("postingId") Long postingId){
+        likeService.removeJpa(postingService.findByIdJpa(postingId));
+        imageService.removeJpa(postingService.findByIdJpa(postingId));
+        commentService.removeAllCommentJpa(postingService.findByIdJpa(postingId));
+        postingService.removeJpa(postingService.findByIdJpa(postingId));
         return "redirect:/posting";
     }
 
@@ -205,6 +202,33 @@ public class PostingController {
     public String like(@PathVariable("postingId") Long postingId, @Login User user){
         likeService.changeLike(user,postingService.findByIdJpa(postingId));
         return "redirect:/posting";
+    }
+
+    @GetMapping("/posting/comment/{postingId}")
+    public String comment(@PathVariable("postingId") Long postingId, Model model,
+                          @ModelAttribute("commentForm") CommentForm commentForm){
+        log.info("comment Posting : {}",postingId);
+        Posting posting = postingService.findByIdJpa(postingId);
+        List<Image> images = imageService.findByPosting(posting);
+        posting.setImages(images);
+        List<Comment> comment = commentService.findCommentByPosting(posting);
+
+        model.addAttribute("posting",posting);
+        model.addAttribute("comment",comment);
+        log.info("editPosting End");
+        return "posting/comment";
+    }
+
+    @PostMapping("/posting/comment/{postingId}")
+    public String commentStore(@PathVariable("postingId") String postingId,
+                               @Valid @ModelAttribute("commentForm") CommentForm commentForm,
+                               @Login User loginUser){
+
+        log.info("post comment : {}",commentForm.getContent());
+
+        Comment comment = new Comment(loginUser, postingService.findByIdJpa(Long.parseLong(postingId)), commentForm.getContent(), LocalDateTime.now());
+        commentService.joinJpa(comment);
+        return "redirect:/posting/comment/" + postingId;
     }
 
 }

@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -22,17 +24,19 @@ public class Posting {
     @JoinColumn(name = "user")
     private User user;
 
+    private String title;
     private String content;
     @Transient
     private List<Image> images;
-    private LocalTime time;
+    private LocalDateTime time;
     private Long likeNumber;
 
     public Posting(){
     }
 
-    public Posting(User user,String content,LocalTime time){
+    public Posting(User user, String title, String content, LocalDateTime time){
         this.user = user;
+        this.title = title;
         this.content = content;
         this.time = time;
         this.likeNumber = 0L;

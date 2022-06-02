@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -34,7 +32,7 @@ public class LikeService {
     public void changeLike(User user, Posting posting) {
         Optional<LikeIt> findLike = likeRepository.findLike(user,posting);
         if(findLike.isEmpty()){
-            likeRepository.updateJpa(new LikeIt(user.getName(),posting));
+            likeRepository.updateJpa(new LikeIt(user,posting));
         }
         else{
             likeRepository.removeJpa(findLike.get());
