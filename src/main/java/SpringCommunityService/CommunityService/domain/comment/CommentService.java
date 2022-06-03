@@ -32,4 +32,13 @@ public class CommentService {
     public void removeAllCommentJpa(Posting posting){
         commentRepository.removeAllCommentJpa(posting);
     }
+
+    public Comment findByIdJpa(Long commentId) {
+        return commentRepository.findOne(commentId);
+    }
+
+    @Transactional
+    public void removeJpa(Comment comment) {
+        commentRepository.removeOne(comment);
+    }
 }

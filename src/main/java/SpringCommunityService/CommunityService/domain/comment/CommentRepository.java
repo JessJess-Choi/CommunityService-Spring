@@ -2,6 +2,7 @@ package SpringCommunityService.CommunityService.domain.comment;
 
 import SpringCommunityService.CommunityService.domain.posting.Posting;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,5 +29,13 @@ public class CommentRepository {
         em.createQuery("select c from Comment c where c.posting = :posting",Comment.class)
                 .setParameter("posting",posting)
                 .getResultList().forEach(comment -> em.remove(comment));
+    }
+
+    public Comment findOne(Long commentId) {
+        return em.find(Comment.class,commentId);
+    }
+
+    public void removeOne(Comment comment) {
+        em.remove(comment);
     }
 }

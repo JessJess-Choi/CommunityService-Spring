@@ -23,8 +23,11 @@
 <br>
 
 <h2>현재 댓글</h2>
+<h3 th:if="${removeCheck}" style="color: red">자신이 작성한 댓글 이거나 게시글 작성자만 댓글 삭제 가능</h3>
 <h4 class="mb-3" th:each="c : ${comment}">
   <span th:text="|${c.user.name} : ${c.content}|"></span>
+  <button type="submit"
+          th:onclick="|location.href='@{/posting/comment/remove/{postingId}/{commentId} (commentId=${c.getId()}, postingId=${posting.getId()})}'|">댓글 삭제</button>
   <br>
 </h4>
 

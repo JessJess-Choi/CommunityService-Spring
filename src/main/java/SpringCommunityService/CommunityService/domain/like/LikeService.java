@@ -1,7 +1,6 @@
 package SpringCommunityService.CommunityService.domain.like;
 
 import SpringCommunityService.CommunityService.domain.posting.Posting;
-import SpringCommunityService.CommunityService.domain.posting.PostingService;
 import SpringCommunityService.CommunityService.domain.user.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +17,7 @@ public class LikeService {
     private final LikeRepository likeRepository;
 
     @Autowired
-    public LikeService(LikeRepository likeRepository, PostingService postingService){
+    public LikeService(LikeRepository likeRepository){
         this.likeRepository = likeRepository;
     }
 

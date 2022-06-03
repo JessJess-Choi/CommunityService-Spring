@@ -23,7 +23,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 @Slf4j
@@ -215,7 +214,7 @@ public class PostingController {
 
         model.addAttribute("posting",posting);
         model.addAttribute("comment",comment);
-        log.info("editPosting End");
+
         return "posting/comment";
     }
 
@@ -229,6 +228,40 @@ public class PostingController {
         Comment comment = new Comment(loginUser, postingService.findByIdJpa(Long.parseLong(postingId)), commentForm.getContent(), LocalDateTime.now());
         commentService.joinJpa(comment);
         return "redirect:/posting/comment/" + postingId;
+    }
+
+    @GetMapping("/posting/comment/remove/{postingId}/{commentId}")
+    public String commentRemove(@PathVariable("commentId") Long commentId,
+                                @PathVariable("postingId") Long postingId,
+                                @ModelAttribute("commentForm") CommentForm commentForm,
+                                BindingResult bindingResult,
+                                Model model, @Login User loginUser){
+
+        Posting posting = postingService.findByIdJpa(postingId);
+        Comment removeComment = commentService.findByIdJpa(commentId);
+
+        if(!posting.getUser().getLoginId().equals(loginUser.getLoginId()) && !removeComment.getUser().getLoginId().equals(loginUser.getLoginId())){
+            Posting findPosting = postingService.findByIdJpa(postingId);
+            List<Image> images = imageService.findByPosting(posting);
+            posting.setImages(images);
+            List<Comment> findComment = commentService.findCommentByPosting(posting);
+
+            model.addAttribute("removeCheck",true);
+            model.addAttribute("posting",findPosting);
+            model.addAttribute("comment",findComment);
+            return "posting/comment";
+        }
+
+
+        commentService.removeJpa(removeComment);
+        List<Image> images = imageService.findByPosting(posting);
+        posting.setImages(images);
+        List<Comment> comment = commentService.findCommentByPosting(posting);
+
+        model.addAttribute("posting",posting);
+        model.addAttribute("comment",comment);
+        log.info("remove comment End");
+        return "redirect:/posting/comment/" + Long.toString(postingId);
     }
 
 }
