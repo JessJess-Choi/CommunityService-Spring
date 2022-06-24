@@ -1,5 +1,6 @@
 package SpringCommunityService.CommunityService.domain.user;
 
+import SpringCommunityService.CommunityService.web.user.EditUserForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,4 +40,8 @@ public class UserService {
         return userRepository.findOneJpa(id);
     }
 
+    @Transactional
+    public void editUser(User loginUser, EditUserForm editUserForm) {
+        userRepository.editUser(loginUser,editUserForm);
+    }
 }

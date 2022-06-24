@@ -28,13 +28,8 @@
 <br>
 <h4 class="mb-3" th:text="|email : ${user.email}|"></h4>
 <br>
-<h4 class="mb-3" th:text="|${user.name} 님 게시물|"></h4>
-<h4 class="mb-3" th:each="post : ${posting}">
-    <span th:text="|작성자 : ${post.user.name}|"></span>
-    <span th:text="${post.content}"></span>
-    <span th:text="|${post.time.hour}:${post.time.minute}|"></span>
-    <img th:each="image : ${post.images}" th:src="|/images/${image.getStoreFileName()}|" width="300" height="300"/>
-    <span th:text="|좋아요 : ${post.getLikeNumber()}|"></span>
-</h4>
+<a th:href="@{/edit}" methods="get" style="background-color: brown;color: black" role="button">회원 정보 수정</a>
+<a th:href="@{/drop}" methods="get" style="background-color: darkgreen;color: black" role="button">회원 탈퇴</a>
+<!----  회원 정보 수정, 탈퇴 구현 할 것  --->
 </body>
 </html>

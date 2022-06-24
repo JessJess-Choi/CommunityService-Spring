@@ -1,10 +1,6 @@
 package SpringCommunityService.CommunityService.domain.posting;
 
-import SpringCommunityService.CommunityService.domain.image.Image;
-import SpringCommunityService.CommunityService.domain.image.ImageService;
-import SpringCommunityService.CommunityService.domain.like.LikeService;
 import SpringCommunityService.CommunityService.domain.user.User;
-import SpringCommunityService.CommunityService.domain.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

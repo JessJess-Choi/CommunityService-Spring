@@ -49,9 +49,9 @@ public class PostingController {
     }
 
     @PostMapping("/posting")
-    public String goToHome(@Login User loginUser, Model model){
+    public String goToHome(@Login User loginUser){
         log.info("id : {}, loginId : {} 게시판 접속 후 홈으로 돌아감",loginUser.getId(),loginUser.getLoginId());
-        model.addAttribute("user",loginUser);
+  //      model.addAttribute("user",loginUser);
         return "redirect:/";
     }
 
@@ -234,13 +234,14 @@ public class PostingController {
     public String commentRemove(@PathVariable("commentId") Long commentId,
                                 @PathVariable("postingId") Long postingId,
                                 @ModelAttribute("commentForm") CommentForm commentForm,
-                                BindingResult bindingResult,
                                 Model model, @Login User loginUser){
 
         Posting posting = postingService.findByIdJpa(postingId);
         Comment removeComment = commentService.findByIdJpa(commentId);
 
-        if(!posting.getUser().getLoginId().equals(loginUser.getLoginId()) && !removeComment.getUser().getLoginId().equals(loginUser.getLoginId())){
+        if(!posting.getUser().getLoginId().equals(loginUser.getLoginId())
+                && !removeComment.getUser().getLoginId().equals(loginUser.getLoginId())){
+
             Posting findPosting = postingService.findByIdJpa(postingId);
             List<Image> images = imageService.findByPosting(posting);
             posting.setImages(images);
@@ -252,14 +253,8 @@ public class PostingController {
             return "posting/comment";
         }
 
-
         commentService.removeJpa(removeComment);
-        List<Image> images = imageService.findByPosting(posting);
-        posting.setImages(images);
-        List<Comment> comment = commentService.findCommentByPosting(posting);
 
-        model.addAttribute("posting",posting);
-        model.addAttribute("comment",comment);
         log.info("remove comment End");
         return "redirect:/posting/comment/" + Long.toString(postingId);
     }

@@ -1,5 +1,6 @@
 package SpringCommunityService.CommunityService.domain.user;
 
+import SpringCommunityService.CommunityService.web.user.EditUserForm;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -21,17 +22,6 @@ public class UserRepository {
         return em.find(User.class,id);
     }
 
-    public List<User> findAllJpa(){
-        return em.createQuery("select u from User u",User.class)
-                .getResultList();
-    }
-
-    public List<User> findOneByNameJpa(String userName){
-        return em.createQuery("select u from User u where u.name like concat('%',:name,'%')",User.class)
-                .setParameter("name",userName)
-                .getResultList();
-    }
-
     public List<User> findByLoginIdJpa(String loginId){
         return em.createQuery("select u from User u where u.loginId = :loginId",User.class)
                 .setParameter("loginId",loginId)
@@ -42,5 +32,12 @@ public class UserRepository {
         return em.createQuery("select u from User u where u.email = :email",User.class)
                 .setParameter("email",email)
                 .getResultList();
+    }
+
+    public void editUser(User loginUser, EditUserForm editUserForm) {
+        User findUser = findOneJpa(loginUser.getId());
+        findUser.setName(editUserForm.getName());
+        findUser.setPassword(editUserForm.getPassword());
+        em.merge(findUser);
     }
 }
