@@ -53,4 +53,9 @@ public class ProfileController {
         return "redirect:/";
     }
 
+    @GetMapping("/drop")
+    public String dropUser(@Login User loginUser){
+        userService.dropUser(loginUser);
+        return "redirect:/logout";
+    }
 }

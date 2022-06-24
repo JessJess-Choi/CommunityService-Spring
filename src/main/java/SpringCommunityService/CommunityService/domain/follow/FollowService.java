@@ -40,4 +40,9 @@ public class FollowService {
     public Follow findOne(User user, User follow) {
         return followRepository.findOne(user,follow);
     }
+
+    @Transactional
+    public void removeAllByUser(User loginUser) {
+        followRepository.findAllByUser(loginUser).forEach(f -> followRepository.unfollow(f));
+    }
 }

@@ -1,6 +1,7 @@
 package SpringCommunityService.CommunityService.domain.comment;
 
 import SpringCommunityService.CommunityService.domain.posting.Posting;
+import SpringCommunityService.CommunityService.domain.user.User;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -37,5 +38,10 @@ public class CommentRepository {
 
     public void removeOne(Comment comment) {
         em.remove(comment);
+    }
+
+    public List<Comment> findByUser(User loginUser){
+        return em.createQuery("select c from Comment c where c.user = :loginUser")
+                    .setParameter("loginUser",loginUser).getResultList();
     }
 }

@@ -32,4 +32,10 @@ public class MessageRepository {
                 .setParameter("receiverId",Long.parseLong(receiverId))
                 .getSingleResult();
     }
+
+    public void removeAllMessageByOneUser(User loginUser) {
+        em.createQuery("select m from Message m where m.user = :loginUser or m.receiver = :loginUser")
+                .setParameter("loginUser",loginUser).getResultList()
+                .forEach(m -> em.remove(m));
+    }
 }

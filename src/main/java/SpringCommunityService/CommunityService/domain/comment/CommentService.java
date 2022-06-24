@@ -1,6 +1,7 @@
 package SpringCommunityService.CommunityService.domain.comment;
 
 import SpringCommunityService.CommunityService.domain.posting.Posting;
+import SpringCommunityService.CommunityService.domain.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,5 +41,10 @@ public class CommentService {
     @Transactional
     public void removeJpa(Comment comment) {
         commentRepository.removeOne(comment);
+    }
+
+    public void removeByUser(User loginUser) {
+        commentRepository.findByUser(loginUser)
+                .forEach(c -> commentRepository.removeOne(c));
     }
 }

@@ -58,9 +58,18 @@ public class LoginController {
 
         return "redirect:" + redirectURL;
     }
+    @GetMapping("/logout")
+    public String logout1(HttpServletRequest req, @Login User loginUser){
+        log.info("{}, {} 로그아웃",loginUser.getId(),loginUser.getLoginId());
+        HttpSession session = req.getSession(false);
+        if(session != null){
+            session.invalidate();
+        }
+        return "redirect:/";
+    }
 
     @PostMapping("/logout")
-    public String logout(HttpServletRequest req, @Login User loginUser){
+    public String logout2(HttpServletRequest req, @Login User loginUser){
         log.info("{}, {} 로그아웃",loginUser.getId(),loginUser.getLoginId());
         HttpSession session = req.getSession(false);
         if(session != null){

@@ -51,7 +51,7 @@ public class PostingService {
         postingRepository.removeJpa(posting);
     }
 
-    public List<Posting> findUserPosting(User user){
-        return postingRepository.findUserPosting(user);
+    public List<Posting> findAllByUser(User loginUser) {
+        return postingRepository.findAllByUser(loginUser);
     }
 }

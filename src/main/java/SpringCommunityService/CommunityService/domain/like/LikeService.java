@@ -39,7 +39,12 @@ public class LikeService {
     }
 
     @Transactional
-    public void removeJpa(Posting posting) {
+    public void removeByPosting(Posting posting) {
         likeRepository.removeByPostingJpa(posting);
+    }
+
+    @Transactional
+    public void removeByUser(User loginUser) {
+        likeRepository.findByUser(loginUser).forEach(l -> likeRepository.removeJpa(l));
     }
 }

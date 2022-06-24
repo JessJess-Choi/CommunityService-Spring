@@ -42,4 +42,9 @@ public class FollowRepository {
     public void unfollow(Follow follow){
         em.remove(follow);
     }
+
+    public List<Follow> findAllByUser(User loginUser) {
+        return em.createQuery("select f from Follow f where f.user = :loginUser or f.follow = :loginUser")
+                .setParameter("loginUser",loginUser).getResultList();
+    }
 }

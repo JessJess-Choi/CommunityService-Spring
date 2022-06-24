@@ -40,12 +40,6 @@ public class PostingRepository {
         return ret;
     }
 
-    public List<Posting> findUserPosting(User user){
-        return em.createQuery("select p from Posting p where p.user = :user",Posting.class)
-                .setParameter("user",user)
-                .getResultList();
-    }
-
     public List<Posting> findPostingByUser(String userName){
         List<Posting> ret =  em.createQuery("select p from Posting p where p.user in (select u from User u where u.name like concat('%',:userName,'%') ) order by p.time desc",Posting.class)
                 .setParameter("userName",userName)
@@ -72,4 +66,8 @@ public class PostingRepository {
         return update;
     }
 
+    public List<Posting> findAllByUser(User loginUser) {
+        return em.createQuery("select p from Posting p where p.user = :loginUser")
+                .setParameter("loginUser",loginUser).getResultList();
+    }
 }

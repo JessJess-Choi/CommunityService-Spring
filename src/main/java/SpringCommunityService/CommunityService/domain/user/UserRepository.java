@@ -1,5 +1,8 @@
 package SpringCommunityService.CommunityService.domain.user;
 
+import SpringCommunityService.CommunityService.domain.comment.Comment;
+import SpringCommunityService.CommunityService.domain.like.LikeIt;
+import SpringCommunityService.CommunityService.domain.posting.Posting;
 import SpringCommunityService.CommunityService.web.user.EditUserForm;
 import org.springframework.stereotype.Repository;
 
@@ -39,5 +42,10 @@ public class UserRepository {
         findUser.setName(editUserForm.getName());
         findUser.setPassword(editUserForm.getPassword());
         em.merge(findUser);
+    }
+
+    public void dropUser(User loginUser) {
+        User findUser = em.find(User.class, loginUser.getId());
+        em.remove(findUser);
     }
 }

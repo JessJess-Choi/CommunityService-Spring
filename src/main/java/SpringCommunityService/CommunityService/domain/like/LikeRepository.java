@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -45,5 +46,13 @@ public class LikeRepository {
         em.createQuery("select l from LikeIt l where l.posting = :posting",LikeIt.class)
                                 .setParameter("posting",posting)
                 .getResultList().forEach(likeIt -> em.remove(likeIt));
+    }
+
+    public void removeByUser(User loginUser) {
+    }
+
+    public List<LikeIt> findByUser(User loginUser) {
+        return em.createQuery("select l from LikeIt l where l.user = :loginUser")
+                .setParameter("loginUser",loginUser).getResultList();
     }
 }

@@ -33,4 +33,9 @@ public class MessageService {
     public User findOne(String id) {
         return messageRepository.findOne(id);
     }
+
+    @Transactional
+    public void removeAllByUser(User loginUser) {
+        messageRepository.removeAllMessageByOneUser(loginUser);
+    }
 }

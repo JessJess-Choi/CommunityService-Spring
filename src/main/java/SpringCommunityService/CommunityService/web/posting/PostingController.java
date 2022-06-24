@@ -190,7 +190,7 @@ public class PostingController {
 
     @GetMapping("/posting/edit/remove/{postingId}")
     public String removePosting(@PathVariable("postingId") Long postingId){
-        likeService.removeJpa(postingService.findByIdJpa(postingId));
+        likeService.removeByPosting(postingService.findByIdJpa(postingId));
         imageService.removeJpa(postingService.findByIdJpa(postingId));
         commentService.removeAllCommentJpa(postingService.findByIdJpa(postingId));
         postingService.removeJpa(postingService.findByIdJpa(postingId));
