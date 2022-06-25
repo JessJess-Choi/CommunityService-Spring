@@ -30,7 +30,7 @@ public class ImageService {
     }
 
     @Transactional
-    public List<Image> removeJpa(Posting posting){
+    public List<Image> removeByPosting(Posting posting){
         return imageRepository.removeJpa(posting);
     }
 

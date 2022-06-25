@@ -171,7 +171,7 @@ public class PostingController {
         posting.setImages(storeImageFiles);
 
         log.info("log for update : {}",posting.getContent());
-        imageService.removeJpa(postingService.findByIdJpa(postingId));
+        imageService.removeByPosting(postingService.findByIdJpa(postingId));
 
         postingService.setJpa(postingId,posting);
 
@@ -191,9 +191,9 @@ public class PostingController {
     @GetMapping("/posting/edit/remove/{postingId}")
     public String removePosting(@PathVariable("postingId") Long postingId){
         likeService.removeByPosting(postingService.findByIdJpa(postingId));
-        imageService.removeJpa(postingService.findByIdJpa(postingId));
+        imageService.removeByPosting(postingService.findByIdJpa(postingId));
         commentService.removeAllCommentJpa(postingService.findByIdJpa(postingId));
-        postingService.removeJpa(postingService.findByIdJpa(postingId));
+        postingService.removeByPosting(postingService.findByIdJpa(postingId));
         return "redirect:/posting";
     }
 

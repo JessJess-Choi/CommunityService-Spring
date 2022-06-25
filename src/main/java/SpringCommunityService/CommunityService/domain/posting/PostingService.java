@@ -47,7 +47,7 @@ public class PostingService {
     }
 
     @Transactional
-    public void removeJpa(Posting posting){
+    public void removeByPosting(Posting posting){
         postingRepository.removeJpa(posting);
     }
 

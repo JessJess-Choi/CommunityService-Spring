@@ -54,7 +54,6 @@ public class UserService {
         }
     }
 
-
     public User findOne(Long id){
         return userRepository.findOneJpa(id);
     }
@@ -69,19 +68,14 @@ public class UserService {
         messageService.removeAllByUser(loginUser);
         followService.removeAllByUser(loginUser);
         List<Posting> findPosting = postingService.findAllByUser(loginUser);
-   //     findPosting.forEach(p -> {
-     //       commentService.removeAllCommentJpa(p);
-    //        likeService.removeJpa(p);
-      //  });
         commentService.removeByUser(loginUser);
         likeService.removeByUser(loginUser);
         findPosting.forEach(p -> {
-            imageService.removeJpa(p);
+            imageService.removeByPosting(p);
             commentService.removeAllCommentJpa(p);
             likeService.removeByPosting(p);
-            postingService.removeJpa(p);
+            postingService.removeByPosting(p);
         });
-//        postingService.removeByUser(loginUser);
         userRepository.dropUser(loginUser);
     }
 }
