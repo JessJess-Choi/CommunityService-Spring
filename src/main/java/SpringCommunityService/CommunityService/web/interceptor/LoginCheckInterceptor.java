@@ -23,7 +23,10 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
             log.info("미인증 사용자 요청 : {}",reqURI);
             log.info("{}, {}",session,session.getAttribute(SessionConst.LOGIN_USER));
             log.info("url : {}",reqURI);
-            response.sendRedirect("/login?redirectURL=" + reqURI);
+            if(reqURI.contains("/api"))
+                response.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            else
+                response.sendRedirect("/login?redirectURL=" + reqURI);
             return false;
         }
         return true;
