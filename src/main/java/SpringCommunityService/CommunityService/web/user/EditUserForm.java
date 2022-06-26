@@ -8,8 +8,13 @@ import javax.validation.constraints.NotEmpty;
 public class EditUserForm {
 
     @NotEmpty
-    String password;
+    private String password;
 
     @NotEmpty
-    String name;
+    private String name;
+
+    public EditUserForm(String password, String name){
+        this.password = password;
+        this.name = name;
+    }
 }

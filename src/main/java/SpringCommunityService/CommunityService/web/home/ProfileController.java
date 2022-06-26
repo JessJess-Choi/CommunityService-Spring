@@ -38,12 +38,12 @@ public class ProfileController {
         return "redirect:/";
     }
 
-    @GetMapping("/edit")
+    @GetMapping("/profile/edit")
     public String editPage(@ModelAttribute("editUserForm") EditUserForm editUserForm){
         return "users/editUserForm";
     }
 
-    @PostMapping("/edit")
+    @PostMapping("/profile/edit")
     public String editUser(@Valid @ModelAttribute("editUserForm") EditUserForm editUserForm,
                            @Login User loginUser, Model model){
         userService.editUser(loginUser, editUserForm);
@@ -53,7 +53,7 @@ public class ProfileController {
         return "redirect:/";
     }
 
-    @GetMapping("/drop")
+    @GetMapping("/profile/drop")
     public String dropUser(@Login User loginUser){
         userService.dropUser(loginUser);
         return "redirect:/logout";
