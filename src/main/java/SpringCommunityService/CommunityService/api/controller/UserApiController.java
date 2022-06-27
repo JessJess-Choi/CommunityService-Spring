@@ -1,7 +1,7 @@
 package SpringCommunityService.CommunityService.api.controller;
 
-import SpringCommunityService.CommunityService.api.dto.RequestForAdd;
-import SpringCommunityService.CommunityService.api.dto.ResponseForAdd;
+import SpringCommunityService.CommunityService.api.request.RequestForAdd;
+import SpringCommunityService.CommunityService.api.response.ResponseForAdd;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.domain.user.UserService;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package SpringCommunityService.CommunityService.api.dto;
+package SpringCommunityService.CommunityService.api.response;
 
 import lombok.Data;
 

@@ -1,4 +1,4 @@
-package SpringCommunityService.CommunityService.api.dto;
+package SpringCommunityService.CommunityService.api.response;
 
 import SpringCommunityService.CommunityService.domain.user.User;
 import lombok.Data;

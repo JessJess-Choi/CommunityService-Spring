@@ -1,7 +1,9 @@
 package SpringCommunityService.CommunityService.api.controller;
 
 import SpringCommunityService.CommunityService.api.dto.PostingDto;
-import SpringCommunityService.CommunityService.api.dto.RequestForAddPosting;
+import SpringCommunityService.CommunityService.api.request.RequestForAddPosting;
+import SpringCommunityService.CommunityService.api.request.RequestForSearchPostingByContent;
+import SpringCommunityService.CommunityService.api.request.RequestForSearchPostingByUser;
 import SpringCommunityService.CommunityService.domain.image.Image;
 import SpringCommunityService.CommunityService.domain.image.ImageService;
 import SpringCommunityService.CommunityService.domain.posting.Posting;
@@ -62,6 +64,20 @@ public class PostingApiController {
         postingService.joinJpa(posting);
         return postingService.findAll()
                 .stream().map(p -> new PostingDto(p)).collect(Collectors.toList());
+    }
+
+    @PostMapping("/api/posting/search/postingId")
+    public List<PostingDto> searchPostingByUser(@RequestBody RequestForSearchPostingByUser requestForSearchPostingByUser){
+       return postingService.findByUser(requestForSearchPostingByUser.getUserName())
+               .stream().map(p -> new PostingDto(p))
+               .collect(Collectors.toList());
+    }
+
+    @PostMapping("/api/posting/search/content")
+    public List<PostingDto> searchPostingByContent(@RequestBody RequestForSearchPostingByContent requestForSearchPostingByContent){
+        return postingService.findByContent(requestForSearchPostingByContent.getContent())
+                .stream().map(p -> new PostingDto(p))
+                .collect(Collectors.toList());
     }
 
 

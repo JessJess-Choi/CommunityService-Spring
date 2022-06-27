@@ -1,8 +1,8 @@
 package SpringCommunityService.CommunityService.api.controller;
 
-import SpringCommunityService.CommunityService.api.dto.RequestForLogin;
-import SpringCommunityService.CommunityService.api.dto.ResponseForLogin;
-import SpringCommunityService.CommunityService.api.dto.ResponseForLogout;
+import SpringCommunityService.CommunityService.api.request.RequestForLogin;
+import SpringCommunityService.CommunityService.api.response.ResponseForLogin;
+import SpringCommunityService.CommunityService.api.response.ResponseForLogout;
 import SpringCommunityService.CommunityService.domain.login.LoginService;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.web.SessionConst;

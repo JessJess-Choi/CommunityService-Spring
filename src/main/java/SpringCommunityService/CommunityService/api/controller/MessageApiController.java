@@ -1,7 +1,7 @@
 package SpringCommunityService.CommunityService.api.controller;
 
 import SpringCommunityService.CommunityService.api.dto.MessageDto;
-import SpringCommunityService.CommunityService.api.dto.RequestForSendMessage;
+import SpringCommunityService.CommunityService.api.request.RequestForSendMessage;
 import SpringCommunityService.CommunityService.domain.message.Message;
 import SpringCommunityService.CommunityService.domain.message.MessageService;
 import SpringCommunityService.CommunityService.domain.user.User;

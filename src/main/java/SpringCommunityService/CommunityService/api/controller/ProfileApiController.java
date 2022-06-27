@@ -1,8 +1,8 @@
 package SpringCommunityService.CommunityService.api.controller;
 
 import SpringCommunityService.CommunityService.api.dto.ProfileDto;
-import SpringCommunityService.CommunityService.api.dto.RequestForEditProfile;
-import SpringCommunityService.CommunityService.api.dto.ResponseForEditProfile;
+import SpringCommunityService.CommunityService.api.request.RequestForEditProfile;
+import SpringCommunityService.CommunityService.api.response.ResponseForEditProfile;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.domain.user.UserService;
 import SpringCommunityService.CommunityService.web.argumentresolver.Login;
