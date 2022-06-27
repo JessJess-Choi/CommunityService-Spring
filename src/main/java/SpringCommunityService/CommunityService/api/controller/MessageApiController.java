@@ -27,9 +27,9 @@ public class MessageApiController {
     }
 
     @PostMapping("/api/directmessage/{receiverId}")
-    public List<MessageDto> sendMessageList(@Login User loginUser,
-                                            @PathVariable("receiverId") String receiverId,
-                                            @RequestBody RequestForSendMessage requestForSendMessage){
+    public List<MessageDto> sendMessage(@Login User loginUser,
+                                        @PathVariable("receiverId") String receiverId,
+                                        @RequestBody RequestForSendMessage requestForSendMessage){
 
         messageService.joinJpa(new Message(loginUser,messageService.findOne(receiverId),requestForSendMessage.getContent(), LocalDateTime.now()));
 

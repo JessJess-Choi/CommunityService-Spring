@@ -1,6 +1,7 @@
 package SpringCommunityService.CommunityService.domain.image;
 
 import SpringCommunityService.CommunityService.domain.posting.Posting;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -15,6 +16,7 @@ public class Image {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "posting")
+    @JsonIgnore
     private Posting posting;
 
     private String uploadFileName;
