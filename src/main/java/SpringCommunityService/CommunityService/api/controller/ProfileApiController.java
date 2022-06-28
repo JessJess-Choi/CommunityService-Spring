@@ -2,6 +2,7 @@ package SpringCommunityService.CommunityService.api.controller;
 
 import SpringCommunityService.CommunityService.api.dto.ProfileDto;
 import SpringCommunityService.CommunityService.api.request.RequestForEditProfile;
+import SpringCommunityService.CommunityService.api.response.ResponseForDropUser;
 import SpringCommunityService.CommunityService.api.response.ResponseForEditProfile;
 import SpringCommunityService.CommunityService.domain.user.User;
 import SpringCommunityService.CommunityService.domain.user.UserService;
@@ -30,5 +31,11 @@ public class ProfileApiController {
         loginUser.setName(requestForEditProfile.getName());
         loginUser.setPassword(requestForEditProfile.getPassword());
         return new ResponseForEditProfile(true);
+    }
+
+    @GetMapping("/api/profile/drop")
+    public ResponseForDropUser dropUser(@Login User loginUser){
+        userService.dropUser(loginUser);
+        return new ResponseForDropUser(true);
     }
 }
