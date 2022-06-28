@@ -1,12 +1,11 @@
 package SpringCommunityService.CommunityService.api.controller;
 
+import SpringCommunityService.CommunityService.api.dto.CommentDto;
 import SpringCommunityService.CommunityService.api.dto.PostingDto;
 import SpringCommunityService.CommunityService.api.dto.ProfileDto;
-import SpringCommunityService.CommunityService.api.request.RequestForAddPosting;
-import SpringCommunityService.CommunityService.api.request.RequestForEditPosting;
-import SpringCommunityService.CommunityService.api.request.RequestForSearchPostingByContent;
-import SpringCommunityService.CommunityService.api.request.RequestForSearchPostingByUser;
+import SpringCommunityService.CommunityService.api.request.*;
 import SpringCommunityService.CommunityService.api.response.ResponseForEditPosting;
+import SpringCommunityService.CommunityService.domain.comment.Comment;
 import SpringCommunityService.CommunityService.domain.comment.CommentService;
 import SpringCommunityService.CommunityService.domain.image.Image;
 import SpringCommunityService.CommunityService.domain.image.ImageService;
@@ -22,6 +21,8 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -165,7 +166,7 @@ public class PostingApiController {
                 .stream().map(p -> new PostingDto(p)).collect(Collectors.toList());
     }
 
-    @GetMapping("/api/posting/comment/{postingId}")
+    @GetMapping("/api/like/{postingId}")
     public List<PostingDto> like(@PathVariable("postingId") Long postingId, @Login User user) {
 
         likeService.changeLike(user, postingService.findByIdJpa(postingId));
@@ -175,5 +176,39 @@ public class PostingApiController {
 
     }
 
+    @GetMapping("/api/posting/comment/{postingId}")
+    public List<CommentDto> comment(@PathVariable("postingId") Long postingId){
+        return commentService.findCommentByPosting(postingService.findByIdJpa(postingId))
+                .stream().map(c -> new CommentDto(c)).collect(Collectors.toList());
+    }
 
+    @PostMapping("/api/posting/comment/{postingId}")
+    public List<CommentDto> addComment(@PathVariable("postingId") Long postingId,
+                                       @RequestBody RequestForAddComment requestForAddComment,
+                                       @Login User loginUser){
+        Comment comment = new Comment(loginUser,postingService.findByIdJpa(postingId), requestForAddComment.getContent(), LocalDateTime.now());
+        commentService.joinJpa(comment);
+        return commentService.findCommentByPosting(postingService.findByIdJpa(postingId))
+                .stream().map(c -> new CommentDto(c)).collect(Collectors.toList());
+    }
+
+    @GetMapping("/api/posting/comment/remove/{postingId}/{commentId}")
+    public List<CommentDto> removeComment(@PathVariable("postingId") Long postingId,
+                                          @PathVariable("commentId") Long commentId,
+                                          @Login User loginUser, HttpServletResponse response) throws IOException {
+
+        Posting posting = postingService.findByIdJpa(postingId);
+        Comment removeComment = commentService.findByIdJpa(commentId);
+
+        if(!posting.getUser().getLoginId().equals(loginUser.getLoginId())
+                && !removeComment.getUser().getLoginId().equals(loginUser.getLoginId())){
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST,"자신이 작성 혹은 게시글주인만 삭제 가능");
+        }
+        else {
+            commentService.removeJpa(removeComment);
+        }
+
+        return commentService.findCommentByPosting(postingService.findByIdJpa(postingId))
+                .stream().map(c -> new CommentDto(c)).collect(Collectors.toList());
+    }
 }
