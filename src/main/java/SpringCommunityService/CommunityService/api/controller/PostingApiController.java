@@ -164,4 +164,16 @@ public class PostingApiController {
         return postingService.findAll()
                 .stream().map(p -> new PostingDto(p)).collect(Collectors.toList());
     }
+
+    @GetMapping("/api/posting/comment/{postingId}")
+    public List<PostingDto> like(@PathVariable("postingId") Long postingId, @Login User user) {
+
+        likeService.changeLike(user, postingService.findByIdJpa(postingId));
+
+        return postingService.findAll()
+                .stream().map(p -> new PostingDto(p)).collect(Collectors.toList());
+
+    }
+
+
 }
