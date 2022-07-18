@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+</head>
+<body>
+
+<div class="container" style="max-width: 600px">
+  <div class="py-5 text-center">
+    <h2>500 에러 : 서버 내 에러</h2>
+  </div>
+
+  <div>
+    <button class="w-100 btn btn-secondary btn-lg" type="button"
+            th:onclick="|location.href='@{/}'|">
+      초기화면으로 돌아가기
+    </button>
+  </div>
+
+  <hr class="my-4">
+
+</div> <!-- /container -->
+
+</body>
+</html>
