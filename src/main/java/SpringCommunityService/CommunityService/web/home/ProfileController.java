@@ -10,6 +10,7 @@ import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -45,7 +46,12 @@ public class ProfileController {
 
     @PostMapping("/profile/edit")
     public String editUser(@Valid @ModelAttribute("editUserForm") EditUserForm editUserForm,
-                           @Login User loginUser, Model model){
+                           @Login User loginUser, Model model,
+                           BindingResult bindingResult){
+        if(loginUser.getName().length() > 30 || loginUser.getPassword().length() > 30
+                || loginUser.getEmail().length() > 30 || loginUser.getLoginId().length() > 30){
+            bindingResult.reject("수정 실패", "모든 회원 정보는 30자 이하");
+        }
         userService.editUser(loginUser, editUserForm);
         loginUser.setPassword(editUserForm.getPassword());
         loginUser.setName(editUserForm.getName());

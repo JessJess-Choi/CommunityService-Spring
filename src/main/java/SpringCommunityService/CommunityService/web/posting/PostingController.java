@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
@@ -64,10 +65,20 @@ public class PostingController {
     public String addContentJpa(@Valid @ModelAttribute PostingForm postingForm,
                                 BindingResult bindingResult,
                                 @Login User loginUser) throws IOException {
-
         if(postingForm.getContent().isEmpty()){
             bindingResult.reject("postingFail","포스팅 내용 입력하세요");
             return "posting/postingForm";
+        }
+        if(postingForm.getContent().length() > 250 || postingForm.getTitle().length() > 50){
+            bindingResult.reject("postingFail","포스팅 제목은 50자 이하, 내용은 250자 이하");
+            return "posting/postingForm";
+        }
+
+        for (MultipartFile imageFile : postingForm.getImageFiles()) {
+            if(imageFile.getSize() > 10485760){
+                bindingResult.reject("postingFail","포스팅 사진은 10MB 보다 작아야함");
+                return "posting/postingForm";
+            }
         }
 
         Posting posting = new Posting(loginUser,postingForm.getTitle(),postingForm.getContent(), LocalDateTime.now());
@@ -97,6 +108,14 @@ public class PostingController {
     @PostMapping("/posting/search/postingId")
     public String searchPostingByNameJpa(@Login User loginUser, Model model,
                                          @ModelAttribute("postingForm") PostingForm postingForm){
+        if(postingForm.getContent().length() > 30){
+            List<Posting> all = postingService.findAll();
+            model.addAttribute("postingUserValidateCheck", true);
+            model.addAttribute("user",loginUser);
+            model.addAttribute("posting",all);
+            return "/posting/posting";
+        }
+        log.info("{}",postingForm.getContent().length());
 
         String searchContent = postingForm.getContent();
         log.info("포스팅 작성자 검색 : {}",searchContent);
@@ -117,6 +136,16 @@ public class PostingController {
     @PostMapping("/posting/search/content")
     public String searchByPostingContentJpa(@Login User loginUser, Model model,
                                             @ModelAttribute("postingForm") PostingForm postingForm){
+
+        if(postingForm.getContent().length() > 250){
+            List<Posting> all = postingService.findAll();
+            model.addAttribute("postingContentValidateCheck", true);
+            model.addAttribute("user",loginUser);
+            model.addAttribute("posting",all);
+            return "/posting/posting";
+        }
+
+
         String searchContent = postingForm.getContent();
         log.info("포스팅 내용 검색 : {}",searchContent);
 
@@ -153,12 +182,27 @@ public class PostingController {
 
     @PostMapping("/posting/edit/{postingId}")
     public String editJpa(@Valid @ModelAttribute("postingForm") PostingForm postingForm,
-                          BindingResult bindingResult,
+                          BindingResult bindingResult, Model model,
                           @PathVariable("postingId") Long postingId) throws IOException {
 
         if(postingForm.getContent().isEmpty()){
+    //        model.addAttribute("posting",postingService.findByIdJpa(postingId));
             bindingResult.reject("postingFail","포스팅 내용 입력하세요");
             return "posting/postingForm";
+        }
+
+        if(postingForm.getContent().length() > 250 || postingForm.getTitle().length() > 50){
+    //        model.addAttribute("posting",postingService.findByIdJpa(postingId));
+            bindingResult.reject("postingFail","포스팅 제목은 50자 이하, 내용은 250자 이하");
+            return "posting/postingForm";
+        }
+
+        for (MultipartFile imageFile : postingForm.getImageFiles()) {
+            if(imageFile.getSize() > 10485760){
+      //          model.addAttribute("posting",postingService.findByIdJpa(postingId));
+                bindingResult.reject("postingFail","포스팅 사진은 10MB 보다 작아야함");
+                return "posting/postingForm";
+            }
         }
 
         log.info("edit : {}",postingId);
@@ -167,6 +211,7 @@ public class PostingController {
 
         Posting posting = postingService.findByIdJpa(postingId);
         posting.setContent(postingForm.getContent());
+        posting.setTitle(postingForm.getTitle());
         List<Image> storeImageFiles = fileStore.storeFiles(posting,postingForm.getImageFiles());
         posting.setImages(storeImageFiles);
 

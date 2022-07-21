@@ -35,9 +35,19 @@ public class UserController {
         }
 
         try {
+            if(user.getName().length() > 30 || user.getPassword().length() > 30
+                || user.getEmail().length() > 30 || user.getLoginId().length() > 30){
+                throw new IllegalStateException();
+            }
             userService.joinJpa(user);
         }catch(IllegalStateException e){
-            bindingResult.reject("회원가입 실패","잘못된 id or email");
+            if(user.getName().length() > 30 || user.getPassword().length() > 30
+                    || user.getEmail().length() > 30 || user.getLoginId().length() > 30){
+                bindingResult.reject("회원가입 실패","모든 회원 정보는 30자 이하");
+            }
+            else {
+                bindingResult.reject("회원가입 실패", "잘못된 id or email");
+            }
             return "users/addUserForm";
         }
         log.info("회원가입 진행 아이디:{}, 이름:{}, 이메일:{}",user.getLoginId(), user.getName(), user.getEmail());
