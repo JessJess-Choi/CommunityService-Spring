@@ -1,6 +1,6 @@
 # CommunityService-Spring
 # SNS 프로젝트
-http://15.164.164.250
+http://43.200.247.179
 > 현재 AWS에서 시험적으로 배포중
 
 ## url
